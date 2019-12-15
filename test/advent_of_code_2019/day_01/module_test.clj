@@ -2,6 +2,19 @@
   (:require [clojure.test :refer :all]
             [advent-of-code-2019.day-01.module :refer :all]))
 
+(deftest computing-fuel-for-mass
+  (testing "fuel for mass 12"
+    (is (= 2 (fuel-for-mass 12))))
+
+  (testing "fuel for mass 14"
+    (is (= 2 (fuel-for-mass 14))))
+
+  (testing "fuel for mass 1969"
+    (is (= 654 (fuel-for-mass 1969))))
+
+  (testing "fuel for mass 100756"
+    (is (= 33583 (fuel-for-mass 100756)))))
+
 (deftest computing-fuel-for-one-module
   (testing "fuel for module of mass 12"
     (is (= 2 (fuel-for-module-mass 12))))
