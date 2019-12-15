@@ -15,9 +15,8 @@
 (defn -main [& args]
   (let [program (-> (read-lines-from-stdin)
                     first
-                    read-ints-from-line)
-        vm (-> program
-               create-intcode-vm
-               (restore-state 12 2)
-               run)]
-        (println vm)))
+                    read-ints-from-line)]
+    (println (-> program
+                 create-intcode-vm
+                 (restore-state 12 2)
+                 run))))
