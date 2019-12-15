@@ -1,5 +1,7 @@
 (ns advent-of-code-2019.day-01.main
-  (:gen-class))
+  (:gen-class)
+  (:require [advent-of-code-2019.day-01.module
+             :refer [compute-required-fuel-for-module-masses]]))
 
 (defn parse-lines-as-integers [lines]
   (map #(Integer/parseInt %) lines))
@@ -8,5 +10,6 @@
   (line-seq (java.io.BufferedReader. *in*)))
 
 (defn -main [& args]
-  (doseq [line (parse-lines-as-integers (read-lines-from-stdin))]
-    (println line)))
+  (println (->> (read-lines-from-stdin)
+                parse-lines-as-integers
+                compute-required-fuel-for-module-masses)))

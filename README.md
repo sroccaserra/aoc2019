@@ -4,7 +4,17 @@ See:
 
 - <https://adventofcode.com/2019>
 
-# References
+## Day 1
+
+### Part 1
+
+    $ lein run-day-01 < data/day_01/input.txt
+
+## Running tests
+
+    $ lein test-refresh
+
+## References
 
 What I learned:
 
