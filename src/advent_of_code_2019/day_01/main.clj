@@ -7,6 +7,3 @@
 (defn -main [& args]
   (doseq [line (read-lines-from-stdin)]
     (println line)))
-
-(defn fuel-for-module [mass]
-  (- (quot mass 3) 2))
