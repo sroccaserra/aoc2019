@@ -6,9 +6,11 @@ See:
 
 ## Day 1
 
-### Part 1
-
     $ lein run-day-01 < data/day_01/input.txt
+
+## Day 2
+
+    $ lein run-day-02 < data/day_02/input.txt
 
 ## Running tests
 
