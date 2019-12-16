@@ -18,7 +18,7 @@
        (map parse-command)))
 
 (defn- apply-move [move path]
-  (let [[position] path
+  (let [position (first path)
         new-position (map #(%1 %2) move position)]
     (conj path new-position)))
 
@@ -29,10 +29,10 @@
     (nth (iterate (partial apply-move move) path)
          nb-steps)))
 
-(defn compute-path [commands]
-  (loop [remaining-commands commands
-         result start-position]
-    (if (empty? remaining-commands)
-      result
-      (recur (rest remaining-commands)
-             (eval-command (first remaining-commands) result)))))
+(defn compute-path
+  ([commands] (compute-path commands start-position))
+  ([commands path]
+   (if (empty? commands)
+     path
+     (recur (rest commands)
+            (eval-command (first commands) path)))))
