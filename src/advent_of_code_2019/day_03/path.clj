@@ -2,31 +2,28 @@
   (:require [clojure.string :as str]
             [clojure.edn :as edn]))
 
-(def ^{:private true} moves {'U [identity inc]
-                             'D [identity dec]
-                             'L [dec identity]
-                             'R [inc identity]})
+(def ^{:private true} increments {'U [0 1]
+                                  'D [0 -1]
+                                  'L [-1 0]
+                                  'R [1 0]})
 
 (def start-position '([0 0]))
 
 (defn parse-command [command-string]
   (->> [(subs command-string 0 1) (subs command-string 1)]
-    (map edn/read-string)))
+       (map edn/read-string)))
 
 (defn parse-commands [commands-string]
   (->> (str/split commands-string #",")
        (map parse-command)))
 
-(defn- apply-move [move path]
-  (let [position (first path)
-        new-position (map #(%1 %2) move position)]
-    (conj path new-position)))
+(defn- apply-move [increment path]
+  (conj path (map + increment (first path))))
 
 (defn eval-command [path command]
   (let [[direction nb-steps] command
-        [[x y]] path
-        move (direction moves)]
-    (nth (iterate (partial apply-move move) path)
+        increment (direction increments)]
+    (nth (iterate (partial apply-move increment) path)
          nb-steps)))
 
 (defn compute-path [commands]
