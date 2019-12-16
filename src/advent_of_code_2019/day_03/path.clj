@@ -13,6 +13,10 @@
   (->> [(subs command-string 0 1) (subs command-string 1)]
     (map edn/read-string)))
 
+(defn parse-commands [commands-string]
+  (->> (str/split commands-string #",")
+       (map parse-command)))
+
 (defn- apply-move [move path]
   (let [[position] path
         new-position (map #(%1 %2) move position)]
@@ -30,5 +34,5 @@
          result start-position]
     (if (empty? remaining-commands)
       result
-      (recur (drop 2 remaining-commands)
-             (eval-command (take 2 remaining-commands) result)))))
+      (recur (rest remaining-commands)
+             (eval-command (first remaining-commands) result)))))

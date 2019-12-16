@@ -2,11 +2,15 @@
   (:require [clojure.test :refer :all]
             [advent-of-code-2019.day-03.path :refer :all]))
 
-(deftest command-tests
+(deftest parsing-commands
   (testing "parsing R8 and U10 commands"
     (is (= ['R 8] (parse-command "R8")))
     (is (= ['U 10] (parse-command "U10"))))
 
+  (testing "parsing several commands"
+    (is (= [['R 3] ['U 15]] (parse-commands "R3,U15")))))
+
+(deftest evaluating-command-tests
   (testing "evaluating commands from start position"
     (is (= '([0 1] [0 0])
            (eval-command ['U 1] start-position)))
@@ -25,4 +29,4 @@
 
   (testing "evaluating a list of commands"
     (is (= '([1 1] [0 1] [0 0])
-           (compute-path ['U 1 'R 1])))))
+           (compute-path [['U 1] ['R 1]])))))
