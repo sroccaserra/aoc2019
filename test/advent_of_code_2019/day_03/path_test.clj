@@ -3,9 +3,9 @@
             [advent-of-code-2019.day-03.path :refer :all]))
 
 (deftest command-tests
-  (testing "parsing R8 and U5 commands"
+  (testing "parsing R8 and U10 commands"
     (is (= ['R 8] (parse-command "R8")))
-    (is (= ['U 5] (parse-command "U5"))))
+    (is (= ['U 10] (parse-command "U10"))))
 
   (testing "evaluating commands from start position"
     (is (= '([0 1] [0 0])

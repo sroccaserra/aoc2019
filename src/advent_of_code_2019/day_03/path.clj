@@ -9,8 +9,8 @@
 
 (def start-position '([0 0]))
 
-(defn parse-command [command]
-  (->> (str/split command #"")
+(defn parse-command [command-string]
+  (->> [(subs command-string 0 1) (subs command-string 1)]
     (map edn/read-string)))
 
 (defn- apply-move [move path]
