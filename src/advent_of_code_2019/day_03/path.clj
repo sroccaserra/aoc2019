@@ -1,7 +1,6 @@
 (ns advent-of-code-2019.day-03.path
   (:require [clojure.string :as str]
-            [clojure.edn :as edn]
-            [clojure.core.match :refer [match]]))
+            [clojure.edn :as edn]))
 
 (defn parse-command [command]
   (->> (str/split command #"")
@@ -15,9 +14,12 @@
   (let [[[x y]] positions]
     (conj positions [(inc x) y])))
 
+(def commands {'U move-up
+               'R move-right})
+
 (defn eval-command [command positions]
   (let [[direction steps] command
-        [[x y]] positions]
-    (match [direction]
-           ['U] (move-up positions)
-           ['R] (move-right positions))))
+        [[x y]] positions
+        command (direction commands)]
+    (nth (iterate command positions)
+         steps)))
