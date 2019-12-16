@@ -9,16 +9,20 @@
 
   (testing "evaluating commands from start position"
     (is (= '([0 1] [0 0])
-           (eval-command ['U 1] '([0 0]))))
+           (eval-command ['U 1] start-position)))
 
     (is (= '([0 2] [0 1] [0 0])
-           (eval-command ['U 2] '([0 0]))))
+           (eval-command ['U 2] start-position)))
 
     (is (= '([0 -2] [0 -1] [0 0])
-           (eval-command ['D 2] '([0 0]))))
+           (eval-command ['D 2] start-position)))
 
     (is (= '([-2 0] [-1 0] [0 0])
-           (eval-command ['L 2] '([0 0]))))
+           (eval-command ['L 2] start-position)))
 
     (is (= '([2 0] [1 0] [0 0])
-           (eval-command ['R 2] '([0 0]))))))
+           (eval-command ['R 2] start-position))))
+
+  (testing "evaluating a list of commands"
+    (is (= '([1 1] [0 1] [0 0])
+           (compute-path ['U 1 'R 1])))))
