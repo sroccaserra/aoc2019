@@ -22,17 +22,12 @@
         new-position (map #(%1 %2) move position)]
     (conj path new-position)))
 
-(defn eval-command [command path]
+(defn eval-command [path command]
   (let [[direction nb-steps] command
         [[x y]] path
         move (direction moves)]
     (nth (iterate (partial apply-move move) path)
          nb-steps)))
 
-(defn compute-path
-  ([commands] (compute-path commands start-position))
-  ([commands path]
-   (if (empty? commands)
-     path
-     (recur (rest commands)
-            (eval-command (first commands) path)))))
+(defn compute-path [commands]
+  (reduce eval-command start-position commands))
