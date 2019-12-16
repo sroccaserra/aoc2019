@@ -22,9 +22,9 @@
 
 (defn eval-command [path command]
   (let [[direction nb-steps] command
-        increment (direction increments)]
-    (nth (iterate (partial apply-move increment) path)
-         nb-steps)))
+        base-increment (direction increments)
+        increment (map (partial * nb-steps) base-increment)]
+    (apply-move increment path)))
 
 (defn compute-path [commands]
   (reduce eval-command start-position commands))

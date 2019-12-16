@@ -10,4 +10,4 @@
 (defn -main [& args]
   (println (->> (read-lines-from-stdin)
                 (map parse-commands)
-                )))
+                (map compute-path))))

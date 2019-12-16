@@ -4,13 +4,11 @@ See:
 
 - <https://adventofcode.com/2019>
 
-## Day 1
+## Running
+
+Use this command, choosing the day number you want:
 
     $ lein run-day-01 < data/day_01/input.txt
-
-## Day 2
-
-    $ lein run-day-02 < data/day_02/input.txt
 
 ## Running tests
 
