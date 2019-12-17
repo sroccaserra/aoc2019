@@ -39,6 +39,12 @@
                     (all-points-between segment-2)))
 
 (defn path-intersections [path-1 path-2]
-  (reduce set/union (for [segment-1 (compute-path-segments path-1)
-                          segment-2 (compute-path-segments path-2)]
-                      (segment-intersection segment-1 segment-2))))
+  (disj
+    (reduce set/union (for [segment-1 (compute-path-segments path-1)
+                            segment-2 (compute-path-segments path-2)]
+                        (segment-intersection segment-1 segment-2)))
+    [0 0]))
+
+(defn manhattan-distance [point]
+  (let [[x y] point]
+    (+ (Math/abs x) (Math/abs y))))
