@@ -20,6 +20,11 @@
 (defn compute-path [commands]
   (reduce eval-command empty-path commands))
 
+(defn compute-path-segments [path]
+  (for [point-1 path
+        point-2 (rest path)]
+    [point-1 point-2]))
+
 (defn all-points-between [segment]
   (let [[[x-1 y-1] [x-2 y-2]] segment
         x-min (min x-1 x-2)
