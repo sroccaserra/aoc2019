@@ -2,31 +2,22 @@
   (:require [clojure.test :refer :all]
             [day-03.path :refer :all]))
 
-(deftest parsing-commands
-  (testing "parsing R8 and U10 commands"
-    (is (= '(R 8) (parse-command "R8")))
-    (is (= '(U 10) (parse-command "U10"))))
-
-  (testing "parsing several commands"
-    (is (= '((R 3) (U 15))
-           (parse-commands "R3,U15")))))
-
 (deftest evaluating-command-tests
   (testing "evaluating commands from start position"
     (is (= [[0 0] [0 1]]
-           (eval-command start-position '(U 1))))
+           (eval-command empty-path '(U 1))))
 
     (is (= [[0 0] [0 2]]
-           (eval-command start-position '(U 2))))
+           (eval-command empty-path '(U 2))))
 
     (is (= [[0 0] [0 -2]]
-           (eval-command start-position '(D 2))))
+           (eval-command empty-path '(D 2))))
 
     (is (= [[0 0] [-2 0]]
-           (eval-command start-position '(L 2))))
+           (eval-command empty-path '(L 2))))
 
     (is (= [[0 0] [2 0]]
-           (eval-command start-position '(R 2)))))
+           (eval-command empty-path '(R 2)))))
 
   (testing "evaluating a list of commands"
     (is (= [[0 0] [0 1] [1 1]]
