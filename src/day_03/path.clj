@@ -1,4 +1,5 @@
-(ns day-03.path)
+(ns day-03.path
+  (:require [clojure.set :as set]))
 
 (def ^{:private true} increments {'U [0 1]
                                   'D [0 -1]
@@ -29,6 +30,6 @@
                y (range y-min (inc y-max))]
            [x y]))))
 
-(defn is-segment-vertical [segment]
-  (let [[[x-1] [x-2]] segment]
-    (= x-1 x-2)))
+(defn intersection [segment-1 segment-2]
+  (set/intersection (all-points-between segment-1)
+                    (all-points-between segment-2)))

@@ -30,14 +30,34 @@
     (is (= #{[0 0] [0 1] [0 2]}
            (all-points-between [[0 0] [0 2]]))))
 
-(testing "building all points for horizontal segments"
+  (testing "building all points for horizontal segments"
     (is (= #{[0 0] [1 0]}
            (all-points-between [[0 0] [1 0]])))
     (is (= #{[0 0] [1 0] [2 0]}
            (all-points-between [[0 0] [2 0]]))))
 
-(testing "is segment vertical"
-  (is (= true (is-segment-vertical [[0 0] [0 1]])))))
+  (testing "finding intersection of two segments"
+    "First:
+    ......
+    .+....
+    .|....
+    .X-+..
+    ......
+
+    Then:
+    .......
+    ...+...
+    ...|...
+    .+-X-+.
+    ...|...
+    .o.+...
+    ......."
+    (is (= #{[0 0]}
+           (intersection [[0 0] [2 0]]
+                         [[0 0] [0 2]])))
+    (is (= #{[2 2]}
+           (intersection [[2 0] [2 4]]
+                         [[0 2] [4 2]]))))
 
 (deftest computing-complex-paths
   (testing "computing a few long paths"
