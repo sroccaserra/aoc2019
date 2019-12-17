@@ -78,9 +78,9 @@
     ...|...
     .o-+...
     ......."
-    (let [path ['(0 0) '(1 0) '(1 4)]]
-      (is (= [[[0 0] [1 0]] [[1 0] [1 4]]])
-          (compute-path-segments path))))
+    (let [path ['(0 0) '(2 0) '(2 4)]]
+      (is (= [[[0 0] [2 0]] [[2 0] [2 4]]]
+             (compute-path-segments path)))))
 
    (testing "second example"
     "Finding:
@@ -91,6 +91,6 @@
     .|.....
     .o.....
     ......."
-    (let [path ['(0 0) '(0 1) '(4 1)]]
-      (is (= [[[0 0] [0 1]] [[0 1] [4 1]]])
-          (compute-path-segments path)))))
+    (let [path ['(0 0) '(0 2) '(4 2)]]
+      (is (= [[[0 0] [0 2]] [[0 2] [4 2]]]
+             (compute-path-segments path))))))

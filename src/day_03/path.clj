@@ -21,9 +21,8 @@
   (reduce eval-command empty-path commands))
 
 (defn compute-path-segments [path]
-  (for [point-1 path
-        point-2 (rest path)]
-    [point-1 point-2]))
+  (for [index (range (dec (count path)))]
+    [(nth path index) (nth path (inc index))]))
 
 (defn all-points-between [segment]
   (let [[[x-1 y-1] [x-2 y-2]] segment
