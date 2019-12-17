@@ -1,16 +1,13 @@
 (ns day-02.main
   (:gen-class)
   (:require [clojure.string :as str]
+            [aoc-common-cli :refer [read-lines-from-stdin]]
             [day-02.intcode
              :refer [create-intcode-vm restore-state run value-at]]))
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
-       (map #(Integer/parseInt %))
-       vec))
-
-(defn read-lines-from-stdin []
-  (line-seq (java.io.BufferedReader. *in*)))
+       (mapv #(Integer/parseInt %))))
 
 (defn -main [& args]
   (let [program (-> (read-lines-from-stdin)
