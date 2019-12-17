@@ -13,23 +13,23 @@
 
 (deftest evaluating-command-tests
   (testing "evaluating commands from start position"
-    (is (= '([0 1] [0 0])
+    (is (= [[0 0] [0 1]]
            (eval-command start-position '(U 1))))
 
-    (is (= '([0 2] [0 0])
+    (is (= [[0 0] [0 2]]
            (eval-command start-position '(U 2))))
 
-    (is (= '([0 -2] [0 0])
+    (is (= [[0 0] [0 -2]]
            (eval-command start-position '(D 2))))
 
-    (is (= '([-2 0] [0 0])
+    (is (= [[0 0] [-2 0]]
            (eval-command start-position '(L 2))))
 
-    (is (= '([2 0] [0 0])
+    (is (= [[0 0] [2 0]]
            (eval-command start-position '(R 2)))))
 
   (testing "evaluating a list of commands"
-    (is (= '([1 1] [0 1] [0 0])
+    (is (= [[0 0] [0 1] [1 1]]
            (compute-path '((U 1) (R 1)))))))
 
 (deftest computing-complex-paths

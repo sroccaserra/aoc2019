@@ -7,7 +7,7 @@
                                   'L [-1 0]
                                   'R [1 0]})
 
-(def start-position '([0 0]))
+(def start-position [[0 0]])
 
 (defn parse-command [command-string]
   (->> [(subs command-string 0 1) (subs command-string 1)]
@@ -18,7 +18,7 @@
        (map parse-command)))
 
 (defn- apply-move [increment path]
-  (conj path (map + increment (first path))))
+  (conj path (map + increment (last path))))
 
 (defn eval-command [path command]
   (let [[direction nb-steps] command
