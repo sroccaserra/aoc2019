@@ -35,6 +35,6 @@
                y (range y-min (inc y-max))]
            [x y]))))
 
-(defn intersection [segment-1 segment-2]
+(defn segment-intersection [segment-1 segment-2]
   (set/intersection (all-points-between segment-1)
                     (all-points-between segment-2)))

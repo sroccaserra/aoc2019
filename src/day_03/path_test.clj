@@ -62,11 +62,11 @@
     .o.+...
     ......."
     (is (= #{[0 0]}
-           (intersection [[0 0] [2 0]]
-                         [[0 0] [0 2]])))
+           (segment-intersection [[0 0] [2 0]]
+                                 [[0 0] [0 2]])))
     (is (= #{[2 2]}
-           (intersection [[2 0] [2 4]]
-                         [[0 2] [4 2]])))))
+           (segment-intersection [[2 0] [2 4]]
+                                 [[0 2] [4 2]])))))
 
 (deftest finding-segments-in-path
   (testing "first example"
@@ -78,8 +78,9 @@
     ...|...
     .o-+...
     ......."
-    (is (= [[[0 0] [1 0]] [[1 0] [1 4]]])
-        (compute-path-segments [[0 0] [1 0] [1 4]])))
+    (let [path ['(0 0) '(1 0) '(1 4)]]
+      (is (= [[[0 0] [1 0]] [[1 0] [1 4]]])
+          (compute-path-segments path))))
 
    (testing "second example"
     "Finding:
@@ -90,5 +91,6 @@
     .|.....
     .o.....
     ......."
-    (is (= [[[0 0] [0 1]] [[0 1] [4 1]]])
-        (compute-path-segments [[0 0] [0 1] [4 1]]))))
+    (let [path ['(0 0) '(0 1) '(4 1)]]
+      (is (= [[[0 0] [0 1]] [[0 1] [4 1]]])
+          (compute-path-segments path)))))
