@@ -94,3 +94,18 @@
     (let [path ['(0 0) '(0 2) '(4 2)]]
       (is (= [[[0 0] [0 2]] [[0 2] [4 2]]]
              (compute-path-segments path))))))
+
+(deftest finding-intersections-of-paths
+  (testing "finding intersections of paths"
+    "Finding:
+    .......
+    ...+...
+    ...|...
+    .+-X-+.
+    .|.|...
+    .o-+...
+    ......."
+    (let [path-1 ['(0 0) '(0 2) '(4 2)]
+          path-2 ['(0 0) '(2 0) '(2 4)]]
+      (is (= #{[0 0] [2 2]}
+             (path-intersections path-1 path-2))))))
