@@ -1,4 +1,4 @@
-# advent-of-code-2019
+# Advent of Code 2019
 
 See:
 
@@ -14,9 +14,13 @@ Use this command, choosing the day number you want:
 
     $ lein test-refresh
 
-## References
 
-What I learned:
+## What I learned
+
+Using `stdin` instead of a file is handy: I can use `echo` to easily pass
+various made up input to the `main` function.
+
+### References
 
 - <https://github.com/tpope/vim-fireplace>
 - <https://github.com/jakemcc/lein-test-refresh>
