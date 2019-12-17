@@ -1,6 +1,6 @@
-(ns advent-of-code-2019.day-01.main-test
+(ns day-01.main-test
   (:require [clojure.test :refer :all]
-            [advent-of-code-2019.day-01.main :refer :all]))
+            [day-01.main :refer :all]))
 
 
 (deftest parsing

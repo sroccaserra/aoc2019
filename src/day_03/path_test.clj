@@ -1,6 +1,6 @@
-(ns advent-of-code-2019.day-03.path-test
+(ns day-03.path-test
   (:require [clojure.test :refer :all]
-            [advent-of-code-2019.day-03.path :refer :all]))
+            [day-03.path :refer :all]))
 
 (deftest parsing-commands
   (testing "parsing R8 and U10 commands"

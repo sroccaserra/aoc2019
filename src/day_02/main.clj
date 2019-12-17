@@ -1,7 +1,7 @@
-(ns advent-of-code-2019.day-02.main
+(ns day-02.main
   (:gen-class)
   (:require [clojure.string :as str]
-            [advent-of-code-2019.day-02.intcode
+            [day-02.intcode
              :refer [create-intcode-vm restore-state run value-at]]))
 
 (defn read-ints-from-line [line]

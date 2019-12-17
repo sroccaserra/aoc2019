@@ -1,8 +1,7 @@
-(ns advent-of-code-2019.day-03.main
+(ns day-03.main
   (:gen-class)
   (:require [clojure.string :as str]
-            [advent-of-code-2019.day-03.path
-             :refer [parse-commands compute-path]]))
+            [day-03.path :refer [parse-commands compute-path]]))
 
 (defn read-lines-from-stdin []
   (line-seq (java.io.BufferedReader. *in*)))

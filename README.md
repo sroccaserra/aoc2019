@@ -8,7 +8,7 @@ See:
 
 Use this command, choosing the day number you want:
 
-    $ lein run-day-01 < data/day_01/input.txt
+    $ lein run-day-01 < resources/day_01/input.txt
 
 ## Running tests
 

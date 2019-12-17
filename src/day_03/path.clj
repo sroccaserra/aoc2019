@@ -1,4 +1,4 @@
-(ns advent-of-code-2019.day-03.path
+(ns day-03.path
   (:require [clojure.string :as str]
             [clojure.edn :as edn]))
 

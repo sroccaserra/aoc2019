@@ -1,4 +1,4 @@
-(ns advent-of-code-2019.day-02.intcode)
+(ns day-02.intcode)
 
 (defn create-intcode-vm [program]
   {:memory program

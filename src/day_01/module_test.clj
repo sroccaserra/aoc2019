@@ -1,6 +1,6 @@
-(ns advent-of-code-2019.day-01.module-test
+(ns day-01.module-test
   (:require [clojure.test :refer :all]
-            [advent-of-code-2019.day-01.module :refer :all]))
+            [day-01.module :refer :all]))
 
 (deftest computing-fuel-for-mass
   (testing "fuel for mass 12"

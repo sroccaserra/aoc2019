@@ -1,4 +1,4 @@
-(ns advent-of-code-2019.day-01.module)
+(ns day-01.module)
 
 (defn fuel-for-mass [mass]
   (-> mass

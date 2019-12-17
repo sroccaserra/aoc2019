@@ -1,6 +1,6 @@
-(ns advent-of-code-2019.day-02.main-test
+(ns day-02.main-test
   (:require [clojure.test :refer :all]
-            [advent-of-code-2019.day-02.main :refer :all]))
+            [day-02.main :refer :all]))
 
 (deftest reading-ints-from-input
   (testing "parsing a string of coma-separated ints"
