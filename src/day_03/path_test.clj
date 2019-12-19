@@ -4,23 +4,24 @@
 
 (deftest evaluating-command-tests
   (testing "evaluating commands from start position"
-    (is (= [[0 0] [0 1]]
+    (is (= [origin (point 0 1)]
            (add-command-points empty-path '(U 1))))
 
-    (is (= [[0 0] [0 1] [0 2]]
+    (is (= [origin (point 0 1) (point 0 2)]
            (add-command-points empty-path '(U 2))))
 
-    (is (= [[0 0] [0 -1] [0 -2]]
+    (is (= [origin (point 0 -1) (point 0 -2)]
            (add-command-points empty-path '(D 2))))
 
-    (is (= [[0 0] [-1 0] [-2 0]]
+    (is (= [origin (point -1 0) (point -2 0)]
            (add-command-points empty-path '(L 2))))
 
-    (is (= [[0 0] [1 0] [2 0]]
+    (is (= [origin (point 1 0) (point 2 0)]
            (add-command-points empty-path '(R 2)))))
 
   (testing "evaluating a list of commands"
-    (is (= [[0 0] [1 0] [2 0] [2 1] [2 2] [2 3] [2 4]]
+    (is (= [origin (point 1 0) (point 2 0)
+            (point 2 1) (point 2 2) (point 2 3) (point 2 4)]
            (compute-all-points '((R 2) (U 4))))))
 
   (testing "computing a few long commands"
@@ -37,11 +38,13 @@
     .|.|...
     .o-+...
     ......."
-    (let [path-1 [[0 0] [0 1] [0 2] [1 2] [2 2] [3 2] [4 2]]
-          path-2 [[0 0] [1 0] [2 0] [2 1] [2 2] [2 3] [2 4]]]
-      (is (= #{[2 2]}
+    (let [path-1 [origin (point 0 1) (point 0 2)
+                  (point 1 2) (point 2 2) (point 3 2) (point 4 2)]
+          path-2 [origin (point 1 0) (point 2 0)
+                  (point 2 1) (point 2 2) (point 2 3) (point 2 4)]]
+      (is (= #{(point 2 2)}
              (path-intersections path-1 path-2))))))
 
 (deftest testing-manhattan-distance
   (testing "simple case"
-    (is (= 6 (manhattan-distance [-3 3])))))
+    (is (= 6 (manhattan-distance (point -3 3))))))
