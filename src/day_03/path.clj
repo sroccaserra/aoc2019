@@ -1,49 +1,32 @@
 (ns day-03.path
   (:require [clojure.set :as set]))
 
-(def ^{:private true} increments {'U [0 1]
-                                  'D [0 -1]
-                                  'L [-1 0]
-                                  'R [1 0]})
+(def ^{:private true}
+  increments-for-direction {'U [0 1]
+                            'D [0 -1]
+                            'L [-1 0]
+                            'R [1 0]})
 
-(def empty-path [[0 0]])
+(def origin [0 0])
 
-(defn- apply-move [increment path]
-  (conj path (map + increment (last path))))
+(def empty-path [origin])
 
-(defn eval-command [path command]
+(defn add-command-points [path command]
   (let [[direction nb-steps] command
-        base-increment (direction increments)
-        increment (map (partial * nb-steps) base-increment)]
-    (apply-move increment path)))
+        [increment-x increment-y] (direction increments-for-direction)
+        steps (range 1 (inc nb-steps))
+        [last-x last-y] (last path)
+        xs (map #(+ last-x (* increment-x %)) steps)
+        ys (map #(+ last-y (* increment-y %)) steps)]
+    (into [] (concat path (map (fn [x y] [x y]) xs ys)))))
 
-(defn compute-path [commands]
-  (reduce eval-command empty-path commands))
-
-(defn compute-path-segments [path]
-  (for [index (range (dec (count path)))]
-    [(nth path index) (nth path (inc index))]))
-
-(defn all-points-between [segment]
-  (let [[[x-1 y-1] [x-2 y-2]] segment
-        x-min (min x-1 x-2)
-        x-max (max x-1 x-2)
-        y-min (min y-1 y-2)
-        y-max (max y-1 y-2)]
-    (set (for [x (range x-min (inc x-max))
-               y (range y-min (inc y-max))]
-           [x y]))))
-
-(defn segment-intersection [segment-1 segment-2]
-  (set/intersection (all-points-between segment-1)
-                    (all-points-between segment-2)))
+(defn compute-all-points [commands]
+  (reduce add-command-points empty-path commands))
 
 (defn path-intersections [path-1 path-2]
   (disj
-    (reduce set/union (for [segment-1 (compute-path-segments path-1)
-                            segment-2 (compute-path-segments path-2)]
-                        (segment-intersection segment-1 segment-2)))
-    [0 0]))
+    (set/intersection (set path-1) (set path-2))
+    origin))
 
 (defn manhattan-distance [point]
   (let [[x y] point]
