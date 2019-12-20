@@ -48,3 +48,16 @@
 (deftest testing-manhattan-distance
   (testing "simple case"
     (is (= 6 (manhattan-distance (point -3 3))))))
+
+(deftest finding-closest-intersection
+  (testing "finding intersections of first example"
+    (let [path-1 (compute-all-points '((R 75) (D 30) (R 83) (U 83) (L 12) (D 49) (R 71) (U 7) (L 72)))
+          path-2 (compute-all-points '((U 62) (R 66) (U 55) (R 34) (D 71) (R 55) (D 58) (R 83)))]
+      (is (= 159
+             (find-closest-intersection path-1 path-2)))))
+
+  (testing "finding intersections of second example"
+    (let [path-1 (compute-all-points '((R 98) (U 47) (R 26) (D 63) (R 33) (U 87) (L 62) (D 20) (R 33) (U 53) (R 51)))
+          path-2 (compute-all-points '((U 98) (R 91) (D 20) (R 16) (D 67) (R 40) (U 7) (R 15) (U 6) (R 7)))]
+      (is (= 135
+             (find-closest-intersection path-1 path-2))))))

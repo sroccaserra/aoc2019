@@ -31,3 +31,8 @@
 
 (defn manhattan-distance [a-point]
   (+ (Math/abs (:x a-point)) (Math/abs (:y a-point))))
+
+(defn find-closest-intersection [path-1 path-2]
+  (->> (path-intersections path-1 path-2)
+       (map manhattan-distance)
+       (apply min)))
