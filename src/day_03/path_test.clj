@@ -2,26 +2,23 @@
   (:require [clojure.test :refer :all]
             [day-03.path :refer :all]))
 
+(def path-for-R2-U4
+  [origin (point 1 0) (point 2 0) (point 2 1) (point 2 2) (point 2 3) (point 2 4)])
+(def path-for-U2-R4
+  [origin (point 0 1) (point 0 2) (point 1 2) (point 2 2) (point 3 2) (point 4 2)])
+
 (deftest evaluating-command-tests
   (testing "evaluating commands from start position"
-    (is (= [origin (point 0 1)]
-           (add-command-points empty-path '(U 1))))
-
-    (is (= [origin (point 0 1) (point 0 2)]
-           (add-command-points empty-path '(U 2))))
-
-    (is (= [origin (point 0 -1) (point 0 -2)]
-           (add-command-points empty-path '(D 2))))
-
-    (is (= [origin (point -1 0) (point -2 0)]
-           (add-command-points empty-path '(L 2))))
-
-    (is (= [origin (point 1 0) (point 2 0)]
-           (add-command-points empty-path '(R 2)))))
+    (are [commands path] (= path
+                            (add-command-points empty-path commands))
+         '(U 1) [origin (point 0 1)]
+         '(U 2) [origin (point 0 1) (point 0 2)]
+         '(D 2) [origin (point 0 -1) (point 0 -2)]
+         '(L 2) [origin (point -1 0) (point -2 0)]
+         '(R 2) [origin (point 1 0) (point 2 0)]))
 
   (testing "evaluating a list of commands"
-    (is (= [origin (point 1 0) (point 2 0)
-            (point 2 1) (point 2 2) (point 2 3) (point 2 4)]
+    (is (= path-for-R2-U4
            (compute-all-points '((R 2) (U 4))))))
 
   (testing "computing a few long commands"
@@ -38,12 +35,8 @@
     .|.|...
     .o-+...
     ......."
-    (let [path-1 [origin (point 0 1) (point 0 2)
-                  (point 1 2) (point 2 2) (point 3 2) (point 4 2)]
-          path-2 [origin (point 1 0) (point 2 0)
-                  (point 2 1) (point 2 2) (point 2 3) (point 2 4)]]
-      (is (= #{(point 2 2)}
-             (path-intersections path-1 path-2))))))
+    (is (= #{(point 2 2)}
+           (path-intersections path-for-U2-R4 path-for-R2-U4)))))
 
 (deftest testing-manhattan-distance
   (testing "simple case"
