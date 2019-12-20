@@ -36,3 +36,10 @@
   (->> (path-intersections path-1 path-2)
        (map manhattan-distance)
        (apply min)))
+
+;; Part 2
+
+(defn find-shortest-wire-intersection [path-1 path-2]
+  (->> (path-intersections path-1 path-2)
+       (map #(+ (.indexOf path-1 %) (.indexOf path-2 %)))
+       (apply min)))
