@@ -3,7 +3,7 @@
   (:require [clojure.string :as str]
             [aoc-common-cli :refer [read-lines-from-stdin]]
             [day-05.intcode
-             :refer [create-intcode-vm restore-state run read-value-at]]))
+             :refer [create-intcode-vm restore-state run read-int-at]]))
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
@@ -19,7 +19,7 @@
                                     create-intcode-vm
                                     (restore-state noun verb)
                                     run
-                                    (read-value-at 0))]
+                                    (read-int-at 0))]
                    :when (= 19690720 result)]
                {:result result
                 :noun noun

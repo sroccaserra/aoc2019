@@ -23,9 +23,12 @@ Use this command, choosing the day number you want:
 - [fn][fn] defines a recursion point, so I don't need to `loop` to `recur` a
   `fn` (also true for `defn`).
 
+- [Destructuring][destruct] is powerfull in Clojure.
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
 - <https://github.com/jakemcc/lein-test-refresh>
 
 [fn]: https://clojure.org/reference/special_forms#fn
+[destruct]: https://clojure.org/guides/destructuring
