@@ -27,22 +27,26 @@
   (let [opcode (read-opcode vm-state)]
     (if (= (:opcode halt-instruction) opcode)
       halt-instruction
-      (let [operation (get operations opcode)
-            value-1 (parameter-value vm-state 1)
-            value-2 (parameter-value vm-state 2)]
-        {:opcode opcode
-         :result (operation value-1 value-2)
-         :dest (parameter-address vm-state 3)
-         :size 4}))))
+      {:opcode opcode
+       :value-1 (parameter-value vm-state 1)
+       :value-2 (parameter-value vm-state 2)
+       :dest (parameter-address vm-state 3)
+       :size 4})))
+
+(defn execute-instruction [{:keys [opcode size value-1 value-2 dest]} vm-state]
+  (let [operation (get operations opcode)
+        result (operation value-1 value-2)]
+    (-> vm-state
+        (assoc-in [:memory dest] result)
+        (update-in [:pc] + size))))
+
+(defn step [vm-state]
+  (-> vm-state
+      read-instruction
+      (execute-instruction vm-state)))
 
 (defn halted? [vm-state]
   (= halt-instruction (read-instruction vm-state)))
-
-(defn step [vm-state]
-  (let [instruction (read-instruction vm-state)]
-    (-> vm-state
-        (assoc-in [:memory (:dest instruction)] (:result instruction))
-        (update-in [:pc] + (:size instruction)))))
 
 (defn run [vm-state]
   (if (halted?  vm-state)
