@@ -10,13 +10,9 @@
 
   (testing "addresses of parameters"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
-      (is (= 2 (parameter-1-address vm)))
-      (is (= 4 (parameter-2-address vm)))
-      (is (= 0 (parameter-3-address vm)))))
-
-  (testing "instruction values"
-    (let [vm (create-intcode-vm [1 2 4 0 99])]
-      (is (= [4 99] (instruction-values vm)))))
+      (is (= 2 (parameter-address vm 1)))
+      (is (= 4 (parameter-address vm 2)))
+      (is (= 0 (parameter-address vm 3)))))
 
   (testing "read an instruction"
     (let [vm (create-intcode-vm [1 2 4 0 99])]

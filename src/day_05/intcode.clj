@@ -9,31 +9,15 @@
   {:memory program
    :pc 0})
 
-(defn read-int-at [vm-state address]
+(defn- read-int-at [vm-state address]
   (get-in vm-state [:memory address]))
 
-(defn parameter-1-address [{pc :pc :as vm-state}]
-  (read-int-at vm-state (+ 1 pc)))
+(defn parameter-address [{pc :pc :as vm-state} n]
+  (read-int-at vm-state (+ n pc)))
 
-(defn parameter-2-address [{pc :pc :as vm-state}]
-  (read-int-at vm-state (+ 2 pc)))
-
-(defn parameter-3-address [{pc :pc :as vm-state}]
-  (read-int-at vm-state (+ 3 pc)))
-
-(defn- parameter-1-value [vm-state]
-  (->> vm-state
-       parameter-1-address
+(defn- parameter-value [vm-state n]
+  (->> (parameter-address vm-state n)
        (read-int-at vm-state)))
-
-(defn- parameter-2-value [vm-state]
-  (->> vm-state
-       parameter-2-address
-       (read-int-at vm-state)))
-
-(defn instruction-values [vm-state]
-  [(parameter-1-value vm-state)
-   (parameter-2-value vm-state)])
 
 (defn- read-opcode [vm-state]
   (read-int-at vm-state (:pc vm-state)))
@@ -43,10 +27,11 @@
     (if (= (:opcode halt-instruction) opcode)
       halt-instruction
       (let [operation (get operations opcode)
-            values (instruction-values vm-state)]
+            value-1 (parameter-value vm-state 1)
+            value-2 (parameter-value vm-state 2)]
         {:opcode opcode
-         :result (apply operation values)
-         :dest (parameter-3-address vm-state)
+         :result (operation value-1 value-2)
+         :dest (parameter-address vm-state 3)
          :size 4}))))
 
 (defn halted? [vm-state]
