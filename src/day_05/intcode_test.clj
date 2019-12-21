@@ -5,8 +5,8 @@
 (deftest intcode-vm
   (testing "find opcode"
     (let [vm (create-intcode-vm [99])]
-      (is (= 99
-             (:opcode (read-instruction vm))))))
+      (is (= {:opcode 99}
+             (read-instruction vm)))))
 
   (testing "addresses of parameters"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
@@ -17,6 +17,11 @@
   (testing "instruction values"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
       (is (= [4 99] (instruction-values vm)))))
+
+  (testing "read an instruction"
+    (let [vm (create-intcode-vm [1 2 4 0 99])]
+      (is (= {:opcode 1 :result 103 :dest 0 :size 4}
+             (read-instruction vm)))))
 
   (testing "program counter increment"
     (let [vm (-> [1 0 0 0 99]
