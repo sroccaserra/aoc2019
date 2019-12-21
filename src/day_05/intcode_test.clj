@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [day-05.intcode :refer :all]))
 
+(def simple-program [1 0 0 0 99])
+
 (deftest intcode-vm
   (testing "find opcode"
     (let [vm (create-intcode-vm [99])]
@@ -14,20 +16,24 @@
       (is (= 4 (parameter-address vm 2)))
       (is (= 0 (parameter-address vm 3)))))
 
+  (testing "parameter access will throw if number exceeds 3"
+    (let [vm (create-intcode-vm simple-program)]
+      (is (thrown? AssertionError (parameter-address vm 4)))))
+
   (testing "read an instruction"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
       (is (= {:opcode 1 :result 103 :dest 0 :size 4}
              (read-instruction vm)))))
 
   (testing "program counter increment"
-    (let [vm (-> [1 0 0 0 99]
+    (let [vm (-> simple-program
                  create-intcode-vm
                  step)]
       (is (halted? vm)))))
 
 (deftest intcode-addition
   (testing "step through a 1 + 1 addition"
-    (let [vm (-> [1 0 0 0 99]
+    (let [vm (-> simple-program
                  create-intcode-vm
                  step)]
       (is (halted? vm))

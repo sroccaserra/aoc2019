@@ -25,10 +25,13 @@ Use this command, choosing the day number you want:
 
 - [Destructuring][destruct] is powerfull in Clojure.
 
+- Clojure has `:pre` and `:post` conditions. See: [fn][fn].
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
 - <https://github.com/jakemcc/lein-test-refresh>
+- <https://clojure.github.io/clojure/clojure.test-api.html>
 
 [fn]: https://clojure.org/reference/special_forms#fn
 [destruct]: https://clojure.org/guides/destructuring
