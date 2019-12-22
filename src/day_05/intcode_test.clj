@@ -29,14 +29,13 @@
     (let [vm (-> simple-program
                  create-intcode-vm
                  step)]
-      (is (halted? vm)))))
+      (is (= 4 (:pc vm))))))
 
 (deftest intcode-addition
   (testing "step through a 1 + 1 addition"
     (let [vm (-> simple-program
                  create-intcode-vm
                  step)]
-      (is (halted? vm))
       (is (= [2 0 0 0 99] (:memory vm)))))
 
   (testing "step through a 2 + 2 addition"

@@ -1,13 +1,13 @@
 (ns day-05.intcode)
 
+(defn create-intcode-vm [program]
+  {:memory program
+   :pc 0})
+
 (def ^:private operations {1 +
                            2 *})
 
 (def ^:private halt-instruction {:opcode 99})
-
-(defn create-intcode-vm [program]
-  {:memory program
-   :pc 0})
 
 (defn- read-int-at [vm-state address]
   (get-in vm-state [:memory address]))
@@ -23,15 +23,18 @@
 (defn- read-opcode [vm-state]
   (read-int-at vm-state (:pc vm-state)))
 
+(defn- halted? [vm-state]
+  (= (:opcode halt-instruction)
+     (read-opcode vm-state)))
+
 (defn read-instruction [vm-state]
-  (let [opcode (read-opcode vm-state)]
-    (if (= (:opcode halt-instruction) opcode)
-      halt-instruction
-      {:opcode opcode
-       :value-1 (parameter-value vm-state 1)
-       :value-2 (parameter-value vm-state 2)
-       :dest (parameter-address vm-state 3)
-       :size 4})))
+  (if (halted? vm-state)
+    halt-instruction
+    {:opcode  (read-opcode vm-state)
+     :value-1 (parameter-value vm-state 1)
+     :value-2 (parameter-value vm-state 2)
+     :dest    (parameter-address vm-state 3)
+     :size    4}))
 
 (defn execute-instruction [{:keys [opcode size value-1 value-2 dest]} vm-state]
   (let [operation (get operations opcode)
@@ -45,8 +48,6 @@
       read-instruction
       (execute-instruction vm-state)))
 
-(defn halted? [vm-state]
-  (= halt-instruction (read-instruction vm-state)))
 
 (defn run [vm-state]
   (if (halted?  vm-state)
