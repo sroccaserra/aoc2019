@@ -12,7 +12,7 @@
 
   (testing "read an instruction"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
-      (is (= {:opcode 1 :size 4 :value-1 4 :value-2 99 :dest 0}
+      (is (= {:opcode 1 :size 4 :parameter-1 4 :parameter-2 99 :dest 0}
              (read-instruction vm)))))
 
   (testing "program counter increment"

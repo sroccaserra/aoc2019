@@ -30,15 +30,15 @@
 (defn read-instruction [vm-state]
   (if (halted? vm-state)
     halt-instruction
-    {:opcode  (read-opcode vm-state)
-     :value-1 (parameter-value vm-state 1)
-     :value-2 (parameter-value vm-state 2)
-     :dest    (parameter-address vm-state 3)
-     :size    4}))
+    {:opcode (read-opcode vm-state)
+     :parameter-1 (parameter-value vm-state 1)
+     :parameter-2 (parameter-value vm-state 2)
+     :dest (parameter-address vm-state 3)
+     :size 4}))
 
-(defn execute-instruction [{:keys [opcode size value-1 value-2 dest]} vm-state]
+(defn execute-instruction [{:keys [opcode size parameter-1 parameter-2 dest]} vm-state]
   (let [operation (get operations opcode)
-        result (operation value-1 value-2)]
+        result (operation parameter-1 parameter-2)]
     (-> vm-state
         (assoc-in [:memory dest] result)
         (update-in [:pc] + size))))
