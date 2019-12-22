@@ -12,7 +12,7 @@
 (defn- read-int-at [vm-state address]
   (get-in vm-state [:memory address]))
 
-(defn parameter-address [{pc :pc :as vm-state} n]
+(defn- parameter-address [{pc :pc :as vm-state} n]
   {:pre [(<= n 3)]}
   (read-int-at vm-state (+ n pc)))
 

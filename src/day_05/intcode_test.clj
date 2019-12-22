@@ -10,16 +10,6 @@
       (is (= {:opcode 99}
              (read-instruction vm)))))
 
-  (testing "addresses of parameters"
-    (let [vm (create-intcode-vm [1 2 4 0 99])]
-      (is (= 2 (parameter-address vm 1)))
-      (is (= 4 (parameter-address vm 2)))
-      (is (= 0 (parameter-address vm 3)))))
-
-  (testing "parameter access will throw if number exceeds 3"
-    (let [vm (create-intcode-vm simple-program)]
-      (is (thrown? AssertionError (parameter-address vm 4)))))
-
   (testing "read an instruction"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
       (is (= {:opcode 1 :size 4 :value-1 4 :value-2 99 :dest 0}
