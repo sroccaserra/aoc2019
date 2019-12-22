@@ -28,11 +28,17 @@
                  step)]
       (is (= [2 0 0 0 99] (:memory vm)))))
 
-  (testing "step through a 2 + 2 addition"
-    (let [vm (-> [2 0 0 0 99]
+  (testing "step through a 1 + 2 addition"
+    (let [vm (-> [1 0 5 0 99 2]
                  create-intcode-vm
                  step)]
-      (is (= [4 0 0 0 99] (:memory vm))))))
+      (is (= [3 0 5 0 99 2] (:memory vm)))))
+
+  (testing "step through a 1 - 3 addition"
+    (let [vm (-> [1 0 5 0 99 -3]
+                 create-intcode-vm
+                 step)]
+      (is (= [-2 0 5 0 99 -3] (:memory vm))))))
 
 (deftest intcode-multiplication
   (testing "step through a 3 * 2 multiplication"
