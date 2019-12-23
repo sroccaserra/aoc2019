@@ -18,3 +18,9 @@
     (let [vm (create-intcode-vm [2 2 4 0 99])]
       (is (= (->MulInstruction 4 99 0)
              (read-instruction vm))))))
+
+(deftest testing-input
+  (testing "reading input"
+    (let [vm (create-intcode-vm [3 0 99] 77)]
+      (is (= (->ReadInstruction 0)
+             (read-instruction vm))))))

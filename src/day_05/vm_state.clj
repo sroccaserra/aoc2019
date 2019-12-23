@@ -17,7 +17,7 @@
        (read-int-at vm-state)))
 
 (defn increment-pc [vm-state n]
-  (update-in vm-state [:pc] + 4))
+  (update-in vm-state [:pc] + n))
 
 (defn read-opcode [vm-state]
   (read-int-at vm-state (:pc vm-state)))
@@ -26,3 +26,5 @@
   (= halt-opcode
      (read-opcode vm-state)))
 
+(defn read-input [vm-state]
+  (:input vm-state))

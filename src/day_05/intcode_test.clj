@@ -57,3 +57,10 @@
                  (restore-state 12 2)
                  run)]
       (is (= [2 12 2 0 99 0 0 0 0 0 0 0 0] (:memory vm))))))
+
+(deftest reading-input
+  (testing "reading input"
+    (let [vm (-> (create-intcode-vm [3 0 99] 77)
+                 step)]
+      (is (= [77 0 99] (:memory vm)))
+      (is (= 2 (:pc vm))))))

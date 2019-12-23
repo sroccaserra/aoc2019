@@ -2,9 +2,10 @@
   (:require [day-05.vm-state :refer [halted?]]
             [day-05.instruction :refer [read-instruction execute-instruction]]))
 
-(defn create-intcode-vm [program]
+(defn create-intcode-vm [program & [input]]
   {:memory program
-   :pc 0})
+   :pc 0
+   :input input})
 
 (defn step [vm-state]
   (-> vm-state

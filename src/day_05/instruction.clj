@@ -2,7 +2,7 @@
   (:require [day-05.vm-state :refer :all]))
 
 (defprotocol Instruction
-  (length [_])
+  (length [this])
   (execute-instruction [this vm-state]))
 
 ;; Halt
@@ -44,13 +44,27 @@
                     (parameter-value vm-state 2)
                     (parameter-address vm-state 3)))
 
-;; Read instructions
+;; Read instruction
+
+(defrecord ReadInstruction [dest]
+  Instruction
+  (length [_] 2)
+  (execute-instruction [this vm-state]
+    (-> vm-state
+        (write-int-at dest (read-input vm-state))
+        (increment-pc (length this)))))
+
+(defn create-read-instruction [vm-state]
+  (->ReadInstruction (parameter-address vm-state 1)))
+
+;; Reading instructions
 
 (def instruction-fn {halt-opcode create-halt-instruction
                      1 create-add-instruction
-                     2 create-mul-instruction})
+                     2 create-mul-instruction
+                     3 create-read-instruction})
 
 (defn read-instruction [vm-state]
   (let [opcode (read-opcode vm-state)
-        create-instruction (instruction-fn opcode)]
+        create-instruction (get instruction-fn opcode)]
     (create-instruction vm-state)))
