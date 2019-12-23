@@ -1,35 +1,52 @@
 (ns day-05.instruction
   (:require [day-05.vm-state :refer :all]))
 
-(def ^:private operations {1 +
-                           2 *})
+(defprotocol Instruction
+  (execute-instruction [_ vm-state]))
 
-(def ^:private halt-instruction {:opcode 99})
+;; Halt
+
+(defrecord HaltInstruction []
+  Instruction
+  (execute-instruction [_ vm-state]))
+
+(defn create-halt-instruction [_]
+  (->HaltInstruction))
+
+;; Add
+
+(defrecord AddInstruction [parameter-1 parameter-2 dest]
+  Instruction
+  (execute-instruction [_ vm-state]
+    (-> vm-state
+        (assoc-in [:memory dest] (+ parameter-1 parameter-2))
+        (update-in [:pc] + 4))))
 
 (defn create-add-instruction [vm-state]
-  {:opcode 1
-   :parameter-1 (parameter-value vm-state 1)
-   :parameter-2 (parameter-value vm-state 2)
-   :dest (parameter-address vm-state 3)
-   :size 4})
+  (->AddInstruction (parameter-value vm-state 1)
+                    (parameter-value vm-state 2)
+                    (parameter-address vm-state 3)))
+
+;; Mul
+
+(defrecord MulInstruction [parameter-1 parameter-2 dest]
+  Instruction
+  (execute-instruction [_ vm-state]
+    (-> vm-state
+        (assoc-in [:memory dest] (* parameter-1 parameter-2))
+        (update-in [:pc] + 4))))
 
 (defn create-mul-instruction [vm-state]
-  {:opcode 2
-   :parameter-1 (parameter-value vm-state 1)
-   :parameter-2 (parameter-value vm-state 2)
-   :dest (parameter-address vm-state 3)
-   :size 4})
+  (->MulInstruction (parameter-value vm-state 1)
+                    (parameter-value vm-state 2)
+                    (parameter-address vm-state 3)))
+
+;; Read instruction
+
+(def instruction-for-opcode {halt-opcode create-halt-instruction
+                             1 create-add-instruction
+                             2 create-mul-instruction})
 
 (defn read-instruction [vm-state]
   (let [opcode (read-opcode vm-state)]
-    (condp = opcode
-      (:opcode halt-instruction) halt-instruction
-      1 (create-add-instruction vm-state)
-      2 (create-mul-instruction vm-state))))
-
-(defn execute-instruction [{:keys [opcode size parameter-1 parameter-2 dest]} vm-state]
-  (let [operation (get operations opcode)
-        result (operation parameter-1 parameter-2)]
-    (-> vm-state
-        (assoc-in [:memory dest] result)
-        (update-in [:pc] + size))))
+    ((instruction-for-opcode opcode) vm-state)))

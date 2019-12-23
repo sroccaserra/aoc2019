@@ -1,6 +1,6 @@
 (ns day-05.intcode
-  (:require [day-05.vm-state :refer :all]
-            [day-05.instruction :refer :all]))
+  (:require [day-05.vm-state :refer [halted?]]
+            [day-05.instruction :refer [read-instruction execute-instruction]]))
 
 (defn create-intcode-vm [program]
   {:memory program
