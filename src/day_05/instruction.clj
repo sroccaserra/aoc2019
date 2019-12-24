@@ -81,23 +81,25 @@
 
 ;; Less than instruction
 
-(defrecord LessThanInstruction [parameter-1 parameter-2 dest]
+(defrecord ComparisonInstruction [comparison-test parameter-1 parameter-2 dest]
   Instruction
   (length [_] 4)
   (execute-instruction [this vm-state]
     (-> vm-state
-        (write-int-at dest (if (< parameter-1 parameter-2) 1 0))
+        (write-int-at dest (if (comparison-test parameter-1 parameter-2) 1 0))
         (increment-pc (length this)))))
 
-(defn create-less-than-instruction [vm-state parameter-modes]
+(defn create-comparison-instruction [comparison-test vm-state parameter-modes]
   (let [parameter-1 (if (= 1 (get parameter-modes 0))
                       (parameter-value vm-state 1)
                       (parameter-value-indirect vm-state 1))
         parameter-2 (if (= 1 (get parameter-modes 1))
                       (parameter-value vm-state 2)
                       (parameter-value-indirect vm-state 2))]
-    (->LessThanInstruction parameter-1 parameter-2
-                           (parameter-value vm-state 3))))
+    (->ComparisonInstruction comparison-test
+                             parameter-1
+                             parameter-2
+                             (parameter-value vm-state 3))))
 
 
 ;; Reading instructions
@@ -111,7 +113,8 @@
                      4 create-output-instruction
                      5 (partial create-jump-instruction zero?)
                      6 (partial create-jump-instruction not-zero?)
-                     7 create-less-than-instruction})
+                     7 (partial create-comparison-instruction <)
+                     8 (partial create-comparison-instruction =)})
 
 (defn read-instruction [vm-state]
   (let [{:keys [opcode parameter-modes]} (-> vm-state

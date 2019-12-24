@@ -2,8 +2,7 @@
   (:gen-class)
   (:require [clojure.string :as str]
             [aoc-common-cli :refer [read-lines-from-stdin]]
-            [day-05.intcode
-             :refer [create-intcode-vm restore-state run]]))
+            [day-05.intcode :refer [create-intcode-vm run]]))
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
@@ -13,6 +12,7 @@
   (let [program (-> (read-lines-from-stdin)
                     first
                     read-ints-from-line)]
-    (println (-> program
-                 (create-intcode-vm 1)
-                 run))))
+    (-> program
+        (create-intcode-vm 5)
+        run
+        println)))

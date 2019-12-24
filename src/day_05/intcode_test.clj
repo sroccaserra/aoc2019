@@ -62,14 +62,6 @@
                  run)]
       (is (= [1101 100 -1 4 99] (:memory vm))))))
 
-(deftest restoring-state
-  (testing "restoring 1202 program alarm"
-    (let [vm (-> [1 0 0 0 99 0 0 0 0 0 0 0 0]
-                 create-intcode-vm
-                 (restore-state 12 2)
-                 run)]
-      (is (= [2 12 2 0 99 0 0 0 0 0 0 0 0] (:memory vm))))))
-
 (deftest input-and-output
   (testing "reading input"
     (let [vm (-> (create-intcode-vm [3 0 99] 77)
@@ -169,4 +161,26 @@
            6 [1]
            7 [1]
            8 [0]
-           9 [0]))))
+           9 [0])))
+
+  (testing "equals 8 (position mode)"
+    (let [vm (create-intcode-vm [3 9 8 9 10 9 4 9 99 -1 8])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           7 [0]
+           8 [1]
+           9 [0])))
+
+ (testing "equals 8 (immediate mode)"
+    (let [vm (create-intcode-vm [3 3 1108 -1 8 3 4 3 99])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           7 [0]
+           8 [1]
+           9 [0]))) )

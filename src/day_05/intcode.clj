@@ -17,8 +17,3 @@
   (if (halted?  vm-state)
     vm-state
     (recur (step vm-state))))
-
-(defn restore-state [{pc :pc :as vm-state} address-1 address-2]
-  (-> vm-state
-      (assoc-in [:memory (+ 1 pc)] address-1)
-      (assoc-in [:memory (+ 2 pc)] address-2)))

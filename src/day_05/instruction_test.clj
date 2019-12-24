@@ -49,5 +49,5 @@
 (deftest testing-comparisons
   (testing "less than"
     (let [vm (create-intcode-vm [1107 1 3 0 99])]
-      (is (= (->LessThanInstruction 1 3 0)
+      (is (= (->ComparisonInstruction < 1 3 0)
              (read-instruction vm))))))
