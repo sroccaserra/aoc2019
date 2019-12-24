@@ -36,7 +36,18 @@
              (read-instruction vm))))))
 
 (deftest testing-jumps
-  (testing "jumping"
+  (testing "jumping if zero"
     (let [vm (create-intcode-vm [1105 1 3 99])]
       (is (= (->JumpInstruction zero? 1 3)
+             (read-instruction vm)))))
+
+  (testing "jumping if not zero"
+    (let [vm (create-intcode-vm [1106 0 3 99])]
+      (is (= (->JumpInstruction not-zero? 0 3)
+             (read-instruction vm))))))
+
+(deftest testing-comparisons
+  (testing "less than"
+    (let [vm (create-intcode-vm [1107 1 3 0 99])]
+      (is (= (->LessThanInstruction 1 3 0)
              (read-instruction vm))))))

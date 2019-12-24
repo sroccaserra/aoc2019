@@ -145,3 +145,28 @@
            1 [1]
            2 [1]
            -1 [1]))))
+
+(deftest comparing
+  (testing "less than 8 (position mode)"
+    (let [vm (create-intcode-vm [3 9 7 9 10 9 4 9 99 -1 8])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           6 [1]
+           7 [1]
+           8 [0]
+           9 [0])))
+
+  (testing "less than 8 (immediate mode)"
+    (let [vm (create-intcode-vm [3 3 1107 -1 8 3 4 3 99])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           6 [1]
+           7 [1]
+           8 [0]
+           9 [0]))))
