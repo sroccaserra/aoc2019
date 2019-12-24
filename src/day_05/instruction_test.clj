@@ -38,5 +38,5 @@
 (deftest testing-jumps
   (testing "jumping"
     (let [vm (create-intcode-vm [1105 1 3 99])]
-      (is (= (->JumpInstruction 1 3)
+      (is (= (->JumpInstruction zero? 1 3)
              (read-instruction vm))))))

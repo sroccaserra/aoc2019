@@ -62,22 +62,22 @@
 
 ;; Jumping instructions
 
-(defrecord JumpInstruction [parameter-1 parameter-2]
+(defrecord JumpInstruction [jump-test parameter-1 parameter-2]
   Instruction
   (length [_] 3)
   (execute-instruction [this vm-state]
-    (if (zero? parameter-1)
+    (if (jump-test parameter-1)
       (increment-pc vm-state (length this))
       (set-pc vm-state parameter-2))))
 
-(defn create-jump-instruction [vm-state parameter-modes]
+(defn create-jump-instruction [jump-test vm-state parameter-modes]
   (let [parameter-1 (if (= 1 (get parameter-modes 0))
                       (parameter-value vm-state 1)
                       (parameter-value-indirect vm-state 1))
         parameter-2 (if (= 1 (get parameter-modes 1))
                       (parameter-value vm-state 2)
                       (parameter-value-indirect vm-state 2))]
-    (->JumpInstruction parameter-1 parameter-2)))
+    (->JumpInstruction jump-test parameter-1 parameter-2)))
 
 ;; Reading instructions
 
@@ -86,7 +86,8 @@
                      2 (partial create-math-instruction *)
                      3 create-input-instruction
                      4 create-output-instruction
-                     5 create-jump-instruction})
+                     5 (partial create-jump-instruction zero?)
+                     6 (partial create-jump-instruction (comp not zero?))})
 
 (defn read-instruction [vm-state]
   (let [{:keys [opcode parameter-modes]} (-> vm-state

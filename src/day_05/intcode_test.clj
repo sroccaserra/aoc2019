@@ -90,7 +90,7 @@
              output)))))
 
 (deftest jumping
-  (testing "jump immediate mode"
+  (testing "jz immediate mode"
     (let [vm (-> (create-intcode-vm [1105 1 7 1 0 0 0 99])
                  run)]
       (is (= 7
@@ -98,10 +98,50 @@
       (is (= 1105
              (get-in vm [:memory 0])))))
 
-  (testing "no jump immediate mode"
+  (testing "no jz immediate mode"
     (let [vm (-> (create-intcode-vm [1105 0 7 1 0 0 0 99])
                  run)]
       (is (= 7
              (:pc vm)))
       (is (= (+ 1105 1105)
-             (get-in vm [:memory 0]))))))
+             (get-in vm [:memory 0])))))
+
+  (testing "jnz immediate mode"
+    (let [vm (-> (create-intcode-vm [1106 0 7 1 0 0 0 99])
+                 run)]
+      (is (= 7
+             (:pc vm)))
+      (is (= 1106
+             (get-in vm [:memory 0])))))
+
+  (testing "no jnz immediate mode"
+    (let [vm (-> (create-intcode-vm [1106 1 7 1 0 0 0 99])
+                 run)]
+      (is (= 7
+             (:pc vm)))
+      (is (= (+ 1106 1106)
+             (get-in vm [:memory 0])))))
+
+  (testing "example program position mode"
+    (let [vm (create-intcode-vm [3 12 6 12 15 1 13 14 13 4 13 99 -1 0 1 9])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           0 [0]
+           1 [1]
+           2 [1]
+           -1 [1])))
+
+  (testing "example program immediate mode"
+    (let [vm (create-intcode-vm [3 3 1105 -1 9 1101 0 0 12 4 12 99 1])]
+      (are [input output] (is (= output
+                                 (-> vm
+                                     (assoc :input input)
+                                     run
+                                     :output)))
+           0 [0]
+           1 [1]
+           2 [1]
+           -1 [1]))))
