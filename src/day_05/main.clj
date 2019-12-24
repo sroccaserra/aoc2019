@@ -13,14 +13,6 @@
   (let [program (-> (read-lines-from-stdin)
                     first
                     read-ints-from-line)]
-    (println (for [noun (range 99)
-                   verb (range 99)
-                   :let [result (-> program
-                                    create-intcode-vm
-                                    (restore-state noun verb)
-                                    run
-                                    (get-in [:memory 0]))]
-                   :when (= 19690720 result)]
-               {:result result
-                :noun noun
-                :verb verb}))))
+    (println (-> program
+                 (create-intcode-vm 1)
+                 run))))
