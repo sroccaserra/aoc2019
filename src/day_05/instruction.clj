@@ -79,6 +79,8 @@
                      4 create-output-instruction})
 
 (defn read-instruction [vm-state]
-  (let [opcode (read-opcode vm-state)
+  (let [{opcode :opcode} (-> vm-state
+                             read-first-instruction-value
+                             parse-first-instruction-value)
         create-instruction (get instruction-fn opcode)]
     (create-instruction vm-state)))

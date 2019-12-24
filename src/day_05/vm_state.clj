@@ -16,14 +16,36 @@
   (read-int-at vm-state (+ n pc)))
 
 (defn parameter-value-indirect [vm-state n]
-  (->> (parameter-value vm-state n)
+  (->> n
+       (parameter-value vm-state)
        (read-int-at vm-state)))
 
 (defn increment-pc [vm-state n]
   (update-in vm-state [:pc] + n))
 
-(defn read-opcode [vm-state]
+(defn- split-to-reverse-digits [n]
+  (->> n
+       (iterate #(quot % 10))
+       (take-while pos?)
+       (mapv #(mod % 10))))
+
+(defn parse-first-instruction-value [first-value]
+  (let [reverse-digits (split-to-reverse-digits first-value)]
+    {:opcode (+ (get reverse-digits 0)
+                (* 10 (get reverse-digits 1 0)))
+     :parameter-modes [(get reverse-digits 2 0)
+                       (get reverse-digits 3 0)
+                       (get reverse-digits 4 0)]}))
+
+
+(defn read-first-instruction-value [vm-state]
   (read-int-at vm-state (:pc vm-state)))
+
+(defn- read-opcode [vm-state]
+  (-> vm-state
+      read-first-instruction-value
+      parse-first-instruction-value
+      :opcode))
 
 (defn halted? [vm-state]
   (= halt-opcode
