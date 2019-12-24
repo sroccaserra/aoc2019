@@ -70,15 +70,21 @@
                  run)]
       (is (= [2 12 2 0 99 0 0 0 0 0 0 0 0] (:memory vm))))))
 
-(deftest reading-input
+(deftest input-and-output
   (testing "reading input"
     (let [vm (-> (create-intcode-vm [3 0 99] 77)
                  step)]
       (is (= [77 0 99] (:memory vm)))
-      (is (= 2 (:pc vm))))))
+      (is (= 2 (:pc vm)))))
 
-(deftest writing-output
   (testing "writing-output"
-    (let [vm (-> (create-intcode-vm [4 77 99])
-                 step)]
-      (is (= [77] (:output vm))))))
+    (let [vm (-> (create-intcode-vm [4 5 4 6 99 77 88])
+                 run)]
+      (is (= [77 88] (:output vm)))))
+
+  (testing "writing the input"
+    (let [output (-> (create-intcode-vm [3 0 4 0 99] 77)
+                     run
+                     :output)]
+      (is (= [77]
+             output)))))

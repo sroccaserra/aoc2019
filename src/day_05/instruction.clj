@@ -58,7 +58,7 @@
         (increment-pc (length this)))))
 
 (defn create-output-instruction [vm-state _]
-  (->OutputInstruction (parameter-value vm-state 1)))
+  (->OutputInstruction (parameter-value-indirect vm-state 1)))
 
 ;; Reading instructions
 
