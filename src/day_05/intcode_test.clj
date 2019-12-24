@@ -88,3 +88,20 @@
                      :output)]
       (is (= [77]
              output)))))
+
+(deftest jumping
+  (testing "jump immediate mode"
+    (let [vm (-> (create-intcode-vm [1105 1 7 1 0 0 0 99])
+                 run)]
+      (is (= 7
+             (:pc vm)))
+      (is (= 1105
+             (get-in vm [:memory 0])))))
+
+  (testing "no jump immediate mode"
+    (let [vm (-> (create-intcode-vm [1105 0 7 1 0 0 0 99])
+                 run)]
+      (is (= 7
+             (:pc vm)))
+      (is (= (+ 1105 1105)
+             (get-in vm [:memory 0]))))))

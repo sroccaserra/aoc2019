@@ -23,6 +23,9 @@
 (defn increment-pc [vm-state n]
   (update-in vm-state [:pc] + n))
 
+(defn set-pc [vm-state n]
+  (assoc vm-state :pc n))
+
 (defn- split-to-reverse-digits [n]
   (->> n
        (iterate #(quot % 10))

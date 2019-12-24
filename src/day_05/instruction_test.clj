@@ -34,3 +34,9 @@
     (let [vm (create-intcode-vm [3 0 99] 77)]
       (is (= (->InputInstruction 0)
              (read-instruction vm))))))
+
+(deftest testing-jumps
+  (testing "jumping"
+    (let [vm (create-intcode-vm [1105 1 3 99])]
+      (is (= (->JumpInstruction 1 3)
+             (read-instruction vm))))))
