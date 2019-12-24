@@ -22,5 +22,5 @@
 (deftest testing-input
   (testing "reading input"
     (let [vm (create-intcode-vm [3 0 99] 77)]
-      (is (= (->ReadInstruction 0)
+      (is (= (->InputInstruction 0)
              (read-instruction vm))))))

@@ -5,7 +5,8 @@
 (defn create-intcode-vm [program & [input]]
   {:memory program
    :pc 0
-   :input input})
+   :input input
+   :output []})
 
 (defn step [vm-state]
   (-> vm-state

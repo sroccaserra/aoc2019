@@ -64,3 +64,9 @@
                  step)]
       (is (= [77 0 99] (:memory vm)))
       (is (= 2 (:pc vm))))))
+
+(deftest writing-output
+  (testing "writing-output"
+    (let [vm (-> (create-intcode-vm [4 77 99])
+                 step)]
+      (is (= [77] (:output vm))))))
