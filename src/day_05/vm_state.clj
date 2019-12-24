@@ -11,12 +11,12 @@
 (defn add-output-value [{output :output :as vm-state} output-value]
   (assoc vm-state :output (conj output output-value)))
 
-(defn parameter-address [{pc :pc :as vm-state} n]
+(defn parameter-value [{pc :pc :as vm-state} n]
   {:pre [(<= n 3)]}
   (read-int-at vm-state (+ n pc)))
 
-(defn parameter-value [vm-state n]
-  (->> (parameter-address vm-state n)
+(defn parameter-value-indirect [vm-state n]
+  (->> (parameter-value vm-state n)
        (read-int-at vm-state)))
 
 (defn increment-pc [vm-state n]

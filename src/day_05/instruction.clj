@@ -25,9 +25,9 @@
         (increment-pc (length this)))))
 
 (defn create-add-instruction [vm-state]
-  (->AddInstruction (parameter-value vm-state 1)
-                    (parameter-value vm-state 2)
-                    (parameter-address vm-state 3)))
+  (->AddInstruction (parameter-value-indirect vm-state 1)
+                    (parameter-value-indirect vm-state 2)
+                    (parameter-value vm-state 3)))
 
 ;; Mul
 
@@ -40,9 +40,9 @@
         (increment-pc (length this)))))
 
 (defn create-mul-instruction [vm-state]
-  (->MulInstruction (parameter-value vm-state 1)
-                    (parameter-value vm-state 2)
-                    (parameter-address vm-state 3)))
+  (->MulInstruction (parameter-value-indirect vm-state 1)
+                    (parameter-value-indirect vm-state 2)
+                    (parameter-value vm-state 3)))
 
 ;; Input instruction
 
@@ -55,7 +55,7 @@
         (increment-pc (length this)))))
 
 (defn create-input-instruction [vm-state]
-  (->InputInstruction (parameter-address vm-state 1)))
+  (->InputInstruction (parameter-value vm-state 1)))
 
 ;; Output instruction
 
@@ -68,7 +68,7 @@
         (increment-pc (length this)))))
 
 (defn create-output-instruction [vm-state]
-  (->OutputInstruction (parameter-address vm-state 1)))
+  (->OutputInstruction (parameter-value vm-state 1)))
 
 ;; Reading instructions
 
