@@ -11,12 +11,12 @@
 
   (testing "read an add instruction"
     (let [vm (create-intcode-vm [1 2 4 0 99])]
-      (is (= (->AddInstruction 4 99 0)
+      (is (= (->MathInstruction + 4 99 0)
              (read-instruction vm)))))
 
   (testing "read a mul instruction"
     (let [vm (create-intcode-vm [2 2 4 0 99])]
-      (is (= (->MulInstruction 4 99 0)
+      (is (= (->MathInstruction * 4 99 0)
              (read-instruction vm))))))
 
 (deftest testing-input

@@ -14,33 +14,19 @@
 (defn create-halt-instruction [_]
   (->HaltInstruction))
 
-;; Add
+;; Add & Mul
 
-(defrecord AddInstruction [parameter-1 parameter-2 dest]
+(defrecord MathInstruction [operation parameter-1 parameter-2 dest]
   Instruction
   (length [_] 4)
   (execute-instruction [this vm-state]
     (-> vm-state
-        (write-int-at dest (+ parameter-1 parameter-2))
+        (write-int-at dest (operation parameter-1 parameter-2))
         (increment-pc (length this)))))
 
-(defn create-add-instruction [vm-state]
-  (->AddInstruction (parameter-value-indirect vm-state 1)
-                    (parameter-value-indirect vm-state 2)
-                    (parameter-value vm-state 3)))
-
-;; Mul
-
-(defrecord MulInstruction [parameter-1 parameter-2 dest]
-  Instruction
-  (length [_] 4)
-  (execute-instruction [this vm-state]
-    (-> vm-state
-        (write-int-at dest (* parameter-1 parameter-2))
-        (increment-pc (length this)))))
-
-(defn create-mul-instruction [vm-state]
-  (->MulInstruction (parameter-value-indirect vm-state 1)
+(defn create-math-instruction [operation vm-state]
+  (->MathInstruction operation
+                    (parameter-value-indirect vm-state 1)
                     (parameter-value-indirect vm-state 2)
                     (parameter-value vm-state 3)))
 
@@ -73,8 +59,8 @@
 ;; Reading instructions
 
 (def instruction-fn {halt-opcode create-halt-instruction
-                     1 create-add-instruction
-                     2 create-mul-instruction
+                     1 (partial create-math-instruction +)
+                     2 (partial create-math-instruction *)
                      3 create-input-instruction
                      4 create-output-instruction})
 
