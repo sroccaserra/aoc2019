@@ -14,9 +14,19 @@
       (is (= (->MathInstruction + 4 99 0)
              (read-instruction vm)))))
 
+  (testing "read an add instruction with immediate mode"
+    (let [vm (create-intcode-vm [1101 2 4 0 99])]
+      (is (= (->MathInstruction + 2 4 0)
+             (read-instruction vm)))))
+
   (testing "read a mul instruction"
     (let [vm (create-intcode-vm [2 2 4 0 99])]
       (is (= (->MathInstruction * 4 99 0)
+             (read-instruction vm)))))
+
+  (testing "read a mul instruction with mis-matched modes"
+    (let [vm (create-intcode-vm [1002 3 4 0 99])]
+      (is (= (->MathInstruction * 0 4 0)
              (read-instruction vm))))))
 
 (deftest testing-input

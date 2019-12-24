@@ -28,7 +28,13 @@
     (let [vm (-> [1 0 5 0 99 -3]
                  create-intcode-vm
                  step)]
-      (is (= [-2 0 5 0 99 -3] (:memory vm))))))
+      (is (= [-2 0 5 0 99 -3] (:memory vm)))))
+
+  (testing "step through a 1 - 3 immediate addition"
+    (let [vm (-> [1101 1 -3 0 99]
+                 create-intcode-vm
+                 step)]
+      (is (= [-2 1 -3 0 99] (:memory vm))))))
 
 (deftest intcode-multiplication
   (testing "step through a 3 * 2 multiplication"
@@ -48,7 +54,13 @@
     (let [vm (-> [1 1 1 4 99 5 6 0 99]
                  create-intcode-vm
                  run)]
-      (is (= [30 1 1 4 2 5 6 0 99] (:memory vm))))))
+      (is (= [30 1 1 4 2 5 6 0 99] (:memory vm)))))
+
+  (testing "run an immediate mode program"
+    (let [vm (-> [1101 100 -1 4 0]
+                 create-intcode-vm
+                 run)]
+      (is (= [1101 100 -1 4 99] (:memory vm))))))
 
 (deftest restoring-state
   (testing "restoring 1202 program alarm"

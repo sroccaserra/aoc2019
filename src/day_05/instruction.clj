@@ -11,7 +11,7 @@
   Instruction
   (execute-instruction [_ vm-state]))
 
-(defn create-halt-instruction [_]
+(defn create-halt-instruction [_ _]
   (->HaltInstruction))
 
 ;; Add & Mul
@@ -24,11 +24,15 @@
         (write-int-at dest (operation parameter-1 parameter-2))
         (increment-pc (length this)))))
 
-(defn create-math-instruction [operation vm-state]
-  (->MathInstruction operation
-                    (parameter-value-indirect vm-state 1)
-                    (parameter-value-indirect vm-state 2)
-                    (parameter-value vm-state 3)))
+(defn create-math-instruction [operation vm-state parameter-modes]
+  (let [parameter-1 (if (= 1 (get parameter-modes 0))
+                      (parameter-value vm-state 1)
+                      (parameter-value-indirect vm-state 1))
+        parameter-2 (if (= 1 (get parameter-modes 1))
+                      (parameter-value vm-state 2)
+                      (parameter-value-indirect vm-state 2))]
+    (->MathInstruction operation parameter-1 parameter-2
+                       (parameter-value vm-state 3))))
 
 ;; Input instruction
 
@@ -40,7 +44,7 @@
         (write-int-at dest (read-input vm-state))
         (increment-pc (length this)))))
 
-(defn create-input-instruction [vm-state]
+(defn create-input-instruction [vm-state _]
   (->InputInstruction (parameter-value vm-state 1)))
 
 ;; Output instruction
@@ -53,7 +57,7 @@
         (add-output-value output-value)
         (increment-pc (length this)))))
 
-(defn create-output-instruction [vm-state]
+(defn create-output-instruction [vm-state _]
   (->OutputInstruction (parameter-value vm-state 1)))
 
 ;; Reading instructions
@@ -65,8 +69,8 @@
                      4 create-output-instruction})
 
 (defn read-instruction [vm-state]
-  (let [{opcode :opcode} (-> vm-state
-                             read-first-instruction-value
-                             parse-first-instruction-value)
+  (let [{:keys [opcode parameter-modes]} (-> vm-state
+                                             read-first-instruction-value
+                                             parse-first-instruction-value)
         create-instruction (get instruction-fn opcode)]
-    (create-instruction vm-state)))
+    (create-instruction vm-state parameter-modes)))
