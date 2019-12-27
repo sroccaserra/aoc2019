@@ -26,14 +26,11 @@
         (increment-pc (length this)))))
 
 (defn create-math-instruction [operation vm-state parameter-modes]
-  (let [parameter-1 (if (= 1 (get parameter-modes 0))
-                      (parameter-value vm-state 1)
-                      (parameter-value-indirect vm-state 1))
-        parameter-2 (if (= 1 (get parameter-modes 1))
-                      (parameter-value vm-state 2)
-                      (parameter-value-indirect vm-state 2))]
-    (->MathInstruction operation parameter-1 parameter-2
-                       (parameter-value vm-state 3))))
+  (let [[mode-p-1 mode-p-2] parameter-modes]
+    (->MathInstruction operation
+                       (parameter-value vm-state 1 mode-p-1)
+                       (parameter-value vm-state 2 mode-p-2)
+                       (parameter-value vm-state 3 immediate-mode))))
 
 ;; Input instruction
 
@@ -46,7 +43,7 @@
         (increment-pc (length this)))))
 
 (defn create-input-instruction [vm-state _]
-  (->InputInstruction (parameter-value vm-state 1)))
+  (->InputInstruction (parameter-value vm-state 1 immediate-mode)))
 
 ;; Output instruction
 
@@ -58,8 +55,9 @@
         (add-output-value output-value)
         (increment-pc (length this)))))
 
-(defn create-output-instruction [vm-state _]
-  (->OutputInstruction (parameter-value-indirect vm-state 1)))
+(defn create-output-instruction [vm-state parameter-modes]
+  (let [mode-p-1 (parameter-modes 0)]
+    (->OutputInstruction (parameter-value vm-state 1 mode-p-1))))
 
 ;; Jumping instructions
 
@@ -72,13 +70,10 @@
       (set-pc vm-state parameter-2))))
 
 (defn create-jump-instruction [jump-test vm-state parameter-modes]
-  (let [parameter-1 (if (= 1 (get parameter-modes 0))
-                      (parameter-value vm-state 1)
-                      (parameter-value-indirect vm-state 1))
-        parameter-2 (if (= 1 (get parameter-modes 1))
-                      (parameter-value vm-state 2)
-                      (parameter-value-indirect vm-state 2))]
-    (->JumpInstruction jump-test parameter-1 parameter-2)))
+  (let [[mode-p-1 mode-p-2] parameter-modes]
+    (->JumpInstruction jump-test
+                       (parameter-value vm-state 1 mode-p-1)
+                       (parameter-value vm-state 2 mode-p-2))))
 
 ;; Comparison instructions
 
@@ -91,16 +86,11 @@
         (increment-pc (length this)))))
 
 (defn create-comparison-instruction [comparison-test vm-state parameter-modes]
-  (let [parameter-1 (if (= 1 (get parameter-modes 0))
-                      (parameter-value vm-state 1)
-                      (parameter-value-indirect vm-state 1))
-        parameter-2 (if (= 1 (get parameter-modes 1))
-                      (parameter-value vm-state 2)
-                      (parameter-value-indirect vm-state 2))]
+  (let [[mode-p-1 mode-p-2] parameter-modes]
     (->ComparisonInstruction comparison-test
-                             parameter-1
-                             parameter-2
-                             (parameter-value vm-state 3))))
+                             (parameter-value vm-state 1 mode-p-1)
+                             (parameter-value vm-state 2 mode-p-2)
+                             (parameter-value vm-state 3 immediate-mode))))
 
 
 ;; Reading instructions

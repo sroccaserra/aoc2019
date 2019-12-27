@@ -9,6 +9,7 @@
          1 1
          12 12
          123 23))
+
   (testing "extracting parameter modes"
     (are [first-value modes]
          (= modes (:parameter-modes

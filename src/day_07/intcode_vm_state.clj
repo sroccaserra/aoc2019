@@ -2,6 +2,9 @@
 
 (def halt-opcode 99)
 
+(def position-mode 0)
+(def immediate-mode 1)
+
 (defn create-intcode-vm [program & [input]]
   {:memory program
    :pc 0
@@ -17,14 +20,13 @@
 (defn add-output-value [{output :output :as vm-state} output-value]
   (assoc vm-state :output (conj output output-value)))
 
-(defn parameter-value [{pc :pc :as vm-state} n]
+(defn parameter-value [{pc :pc :as vm-state} n mode]
   {:pre [(<= n 3)]}
-  (read-int-at vm-state (+ n pc)))
-
-(defn parameter-value-indirect [vm-state n]
-  (->> n
-       (parameter-value vm-state)
-       (read-int-at vm-state)))
+  (let [value (read-int-at vm-state (+ n pc))]
+  (condp = mode
+    immediate-mode value
+    position-mode (read-int-at vm-state value)
+    :else (throw (AssertionError. "Unsupported mode.")))))
 
 (defn increment-pc [vm-state n]
   (update-in vm-state [:pc] + n))
