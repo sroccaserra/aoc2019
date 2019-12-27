@@ -14,6 +14,6 @@
                     first
                     read-ints-from-line)]
     (-> program
-        (create-intcode-vm 5)
+        (create-intcode-vm :input [5])
         run
         println)))

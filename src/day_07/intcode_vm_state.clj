@@ -5,7 +5,8 @@
 (def position-mode 0)
 (def immediate-mode 1)
 
-(defn create-intcode-vm [program & [input]]
+(defn create-intcode-vm [program & {:keys [input]
+                                    :or {input []}}]
   {:memory program
    :pc 0
    :input input
@@ -63,4 +64,7 @@
      (read-opcode vm-state)))
 
 (defn read-input [vm-state]
-  (:input vm-state))
+  (first (:input vm-state)))
+
+(defn drop-input [{input :input :as vm-state}]
+  (assoc vm-state :input (rest input)))

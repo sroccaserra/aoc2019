@@ -40,6 +40,7 @@
   (execute-instruction [this vm-state]
     (-> vm-state
         (write-int-at dest (read-input vm-state))
+        drop-input
         (increment-pc (length this)))))
 
 (defn create-input-instruction [vm-state _]
@@ -110,6 +111,5 @@
 (defn read-instruction [vm-state]
   (let [{:keys [opcode parameter-modes]} (-> vm-state
                                              read-first-instruction-value
-                                             parse-first-instruction-value)
-        create-instruction (get instruction-fn opcode)]
-    (create-instruction vm-state parameter-modes)))
+                                             parse-first-instruction-value)]
+    ((instruction-fn opcode) vm-state parameter-modes)))
