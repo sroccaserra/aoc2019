@@ -27,6 +27,8 @@ Use this command, choosing the day number you want:
 
 - Clojure has `:pre` and `:post` conditions. See: [fn][fn].
 
+- We can substitute functions, during a test execution for instance, with [with-redefs][with-redefs].
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
@@ -35,3 +37,4 @@ Use this command, choosing the day number you want:
 
 [fn]: https://clojure.org/reference/special_forms#fn
 [destruct]: https://clojure.org/guides/destructuring
+[with-redefs]: https://clojuredocs.org/clojure.core/with-redefs

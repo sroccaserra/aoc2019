@@ -9,7 +9,7 @@
                                     :or {inputs []}}]
   {:memory program
    :pc 0
-   :inputs inputs
+   :inputs (into clojure.lang.PersistentQueue/EMPTY inputs)
    :outputs []})
 
 ;; Memory
@@ -70,13 +70,13 @@
 ;; Inputs and outputs
 
 (defn read-input [vm-state]
-  (first (:inputs vm-state)))
+  (peek (:inputs vm-state)))
 
 (defn add-input [{inputs :inputs :as vm-state} input-value]
   (assoc vm-state :inputs (conj inputs input-value)))
 
 (defn drop-input [{inputs :inputs :as vm-state}]
-  (assoc vm-state :inputs (subvec inputs 1)))
+  (assoc vm-state :inputs (pop inputs)))
 
 (defn add-output [{outputs :outputs :as vm-state} output-value]
   (assoc vm-state :outputs (conj outputs output-value)))
