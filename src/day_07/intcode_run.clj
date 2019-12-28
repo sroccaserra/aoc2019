@@ -9,6 +9,6 @@
       (execute-instruction vm-state)))
 
 (defn run [vm-state]
-  (if (halted?  vm-state)
+  (if (halted? vm-state)
     vm-state
     (recur (step vm-state))))

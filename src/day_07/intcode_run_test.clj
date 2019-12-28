@@ -1,6 +1,6 @@
 (ns day-07.intcode-run-test
   (:require [clojure.test :refer :all]
-            [day-07.intcode-vm-state :refer [create-intcode-vm]]
+            [day-07.intcode-vm-state :refer [create-intcode-vm add-input]]
             [day-07.intcode-run :refer :all]))
 
 (def simple-program [1 0 0 0 99])
@@ -66,24 +66,24 @@
 (deftest input-and-output
   (testing "reading input"
     (let [vm (-> (create-intcode-vm [3 0 99]
-                                    :input [77])
+                                    :inputs [77])
                  step)]
       (is (= [77 0 99] (:memory vm)))
-      (is (= [] (:input vm)))
+      (is (= [] (:inputs vm)))
       (is (= 2 (:pc vm)))))
 
   (testing "writing-output"
     (let [vm (-> (create-intcode-vm [4 5 4 6 99 77 88])
                  run)]
-      (is (= [77 88] (:output vm)))))
+      (is (= [77 88] (:outputs vm)))))
 
   (testing "writing the input"
-    (let [output (-> (create-intcode-vm [3 0 4 0 99]
-                                        :input [77])
+    (let [outputs (-> (create-intcode-vm [3 0 4 0 99]
+                                        :inputs [77])
                      run
-                     :output)]
+                     :outputs)]
       (is (= [77]
-             output)))))
+             outputs)))))
 
 (deftest jumping
   (testing "jz immediate mode"
@@ -121,11 +121,11 @@
 (deftest testing-complex-programs
   (testing "example program position mode"
     (let [vm (create-intcode-vm [3 12 6 12 15 1 13 14 13 4 13 99 -1 0 1 9])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            0 [0]
            1 [1]
            2 [1]
@@ -133,11 +133,11 @@
 
   (testing "example program immediate mode"
     (let [vm (create-intcode-vm [3 3 1105 -1 9 1101 0 0 12 4 12 99 1])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            0 [0]
            1 [1]
            2 [1]
@@ -146,11 +146,11 @@
 (deftest comparing
   (testing "less than 8 (position mode)"
     (let [vm (create-intcode-vm [3 9 7 9 10 9 4 9 99 -1 8])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            6 [1]
            7 [1]
            8 [0]
@@ -158,11 +158,11 @@
 
   (testing "less than 8 (immediate mode)"
     (let [vm (create-intcode-vm [3 3 1107 -1 8 3 4 3 99])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            6 [1]
            7 [1]
            8 [0]
@@ -170,22 +170,22 @@
 
   (testing "equals 8 (position mode)"
     (let [vm (create-intcode-vm [3 9 8 9 10 9 4 9 99 -1 8])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            7 [0]
            8 [1]
            9 [0])))
 
  (testing "equals 8 (immediate mode)"
     (let [vm (create-intcode-vm [3 3 1108 -1 8 3 4 3 99])]
-      (are [input-value output] (is (= output
-                                 (-> vm
-                                     (assoc :input [input-value])
-                                     run
-                                     :output)))
+      (are [input-value outputs] (is (= outputs
+                                        (-> vm
+                                            (add-input input-value)
+                                            run
+                                            :outputs)))
            7 [0]
            8 [1]
            9 [0]))))

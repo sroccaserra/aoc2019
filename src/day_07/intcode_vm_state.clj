@@ -5,12 +5,14 @@
 (def position-mode 0)
 (def immediate-mode 1)
 
-(defn create-intcode-vm [program & {:keys [input]
-                                    :or {input []}}]
+(defn create-intcode-vm [program & {:keys [inputs]
+                                    :or {inputs []}}]
   {:memory program
    :pc 0
-   :input input
-   :output []})
+   :inputs inputs
+   :outputs []})
+
+;; Memory
 
 (defn- read-int-at [vm-state address]
   (get-in vm-state [:memory address]))
@@ -18,22 +20,18 @@
 (defn write-int-at [vm-state address value]
   (assoc-in vm-state [:memory address] value))
 
-(defn add-output-value [{output :output :as vm-state} output-value]
-  (assoc vm-state :output (conj output output-value)))
-
-(defn parameter-value [{pc :pc :as vm-state} n mode]
-  {:pre [(<= n 3)]}
-  (let [value (read-int-at vm-state (+ n pc))]
-  (condp = mode
-    immediate-mode value
-    position-mode (read-int-at vm-state value)
-    :else (throw (AssertionError. "Unsupported mode.")))))
+;; Program Counter
 
 (defn increment-pc [vm-state n]
   (update-in vm-state [:pc] + n))
 
 (defn set-pc [vm-state n]
   (assoc vm-state :pc n))
+
+;; Opcode and parameter modes
+
+(defn read-first-instruction-value [vm-state]
+  (read-int-at vm-state (:pc vm-state)))
 
 (defn- split-to-reverse-digits [n]
   (->> n
@@ -49,10 +47,6 @@
                        (get reverse-digits 3 0)
                        (get reverse-digits 4 0)]}))
 
-
-(defn read-first-instruction-value [vm-state]
-  (read-int-at vm-state (:pc vm-state)))
-
 (defn- read-opcode [vm-state]
   (-> vm-state
       read-first-instruction-value
@@ -63,8 +57,26 @@
   (= halt-opcode
      (read-opcode vm-state)))
 
-(defn read-input [vm-state]
-  (first (:input vm-state)))
+;; Parameters
 
-(defn drop-input [{input :input :as vm-state}]
-  (assoc vm-state :input (rest input)))
+(defn parameter-value [{pc :pc :as vm-state} n mode]
+  {:pre [(<= n 3)]}
+  (let [value (read-int-at vm-state (+ n pc))]
+  (condp = mode
+    immediate-mode value
+    position-mode (read-int-at vm-state value)
+    :else (throw (AssertionError. "Unsupported mode.")))))
+
+;; Inputs and outputs
+
+(defn read-input [vm-state]
+  (first (:inputs vm-state)))
+
+(defn add-input [{inputs :inputs :as vm-state} input-value]
+  (assoc vm-state :inputs (conj inputs input-value)))
+
+(defn drop-input [{inputs :inputs :as vm-state}]
+  (assoc vm-state :inputs (subvec inputs 1)))
+
+(defn add-output [{outputs :outputs :as vm-state} output-value]
+  (assoc vm-state :outputs (conj outputs output-value)))

@@ -53,7 +53,7 @@
   (length [_] 2)
   (execute-instruction [this vm-state]
     (-> vm-state
-        (add-output-value output-value)
+        (add-output output-value)
         (increment-pc (length this)))))
 
 (defn create-output-instruction [vm-state parameter-modes]

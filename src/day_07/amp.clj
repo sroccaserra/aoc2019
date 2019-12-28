@@ -14,7 +14,7 @@
     input-signal
     (let [phase (first phase-settings)
           output (-> program
-                     (create-intcode-vm :input [phase input-signal])
+                     (create-intcode-vm :inputs [phase input-signal])
                      run
-                     :output first)]
+                     :outputs first)]
       (recur program (rest phase-settings) output))))
