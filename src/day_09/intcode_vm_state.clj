@@ -4,14 +4,16 @@
 
 (def position-mode 0)
 (def immediate-mode 1)
+(def relative-mode 2)
 
 (defmethod print-method clojure.lang.PersistentQueue [this ^java.io.Writer w]
   (.write w (str (vec this))))
 
-(defn create-intcode-vm [program & {:keys [inputs]
-                                    :or {inputs []}}]
-  {:memory program
+(defn create-intcode-vm [program & {:keys [inputs memory-size]
+                                    :or {inputs [] memory-size 0}}]
+  {:memory (into [] (concat program (replicate (- memory-size (count program)) 0)))
    :pc 0
+   :relative-base 0
    :inputs (into clojure.lang.PersistentQueue/EMPTY inputs)
    :outputs []})
 
@@ -68,6 +70,7 @@
   (condp = mode
     immediate-mode value
     position-mode (read-int-at vm-state value)
+    relative-mode (read-int-at vm-state (+ value (:relative-base vm-state)))
     :else (throw (AssertionError. "Unsupported mode.")))))
 
 ;; Inputs and outputs
@@ -95,3 +98,10 @@
 
 (defn drop-outputs [vm-state]
   (assoc vm-state :outputs []))
+
+;; Relative base
+
+(defn adjust-relative-base [vm-state amount]
+  (assoc vm-state
+         :relative-base
+         (+ (:relative-base vm-state) amount)))

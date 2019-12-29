@@ -93,6 +93,18 @@
                              (parameter-value vm-state 2 mode-p-2)
                              (parameter-value vm-state 3 immediate-mode))))
 
+;; Relative base instruction
+
+(defrecord RelativeBaseInstruction [parameter-1]
+  Instruction
+  (length [_] 2)
+  (execute-instruction [this vm-state]
+    (-> vm-state
+        (adjust-relative-base parameter-1)
+        (increment-pc (length this)))))
+
+(defn create-relative-base-instruction [vm-state parameter-modes]
+  (->RelativeBaseInstruction (parameter-value vm-state 1 (first parameter-modes))))
 
 ;; Reading instructions
 
@@ -106,7 +118,8 @@
                      5 (partial create-jump-instruction zero?)
                      6 (partial create-jump-instruction not-zero?)
                      7 (partial create-comparison-instruction <)
-                     8 (partial create-comparison-instruction =)})
+                     8 (partial create-comparison-instruction =)
+                     9 create-relative-base-instruction})
 
 (defn read-instruction [vm-state]
   (let [{:keys [opcode parameter-modes]} (-> vm-state

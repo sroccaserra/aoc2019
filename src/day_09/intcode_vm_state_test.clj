@@ -36,10 +36,23 @@
                          (add-input 3)
                          :inputs))))))
 
+(deftest testing-relative-mode
+  (let [vm (-> [204 0 99 77]
+               create-intcode-vm
+               (assoc :relative-base 3))]
+    (is (= 77 (parameter-value vm 1 relative-mode)))))
+
 (deftest long-ints
   (is (= 1125899906842624
          (-> [104 1125899906842624 99]
              create-intcode-vm run :outputs first)))
   (is (= 1219070632396864
-         (-> [1102,34915192,34915192,7,4,7,99,0]
+         (-> [1102 34915192 34915192 7 4 7 99 0]
              create-intcode-vm run :outputs first))))
+
+(deftest testing-a-quine
+  (let [program [109 1 204 -1 1001 100 1 100 1008 100 16 101 1006 101 0 99]]
+    (is (= program (-> program
+                       (create-intcode-vm :memory-size 101)
+                       run
+                       :outputs)))))
