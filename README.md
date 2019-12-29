@@ -29,6 +29,8 @@ Use this command, choosing the day number you want:
 
 - We can substitute functions, during a test execution for instance, with [with-redefs][with-redefs].
 
+- I can access the Clojure doc from the REPL: [doc][doc], [find-doc][find-doc], [apropos][apropos].
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
@@ -38,3 +40,6 @@ Use this command, choosing the day number you want:
 [fn]: https://clojure.org/reference/special_forms#fn
 [destruct]: https://clojure.org/guides/destructuring
 [with-redefs]: https://clojuredocs.org/clojure.core/with-redefs
+[doc]: https://clojuredocs.org/clojure.repl/doc
+[find-doc]: https://clojuredocs.org/clojure.repl/find-doc
+[apropos]: https://clojuredocs.org/clojure.repl/apropos
