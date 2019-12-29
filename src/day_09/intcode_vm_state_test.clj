@@ -1,5 +1,6 @@
 (ns day-09.intcode-vm-state-test
   (:require [clojure.test :refer :all]
+            [day-09.intcode-run :refer [run]]
             [day-09.intcode-vm-state :refer :all]))
 
 (deftest parsing-first-instruction-value
@@ -34,3 +35,11 @@
                          (add-input 2)
                          (add-input 3)
                          :inputs))))))
+
+(deftest long-ints
+  (is (= 1125899906842624
+         (-> [104 1125899906842624 99]
+             create-intcode-vm run :outputs first)))
+  (is (= 1219070632396864
+         (-> [1102,34915192,34915192,7,4,7,99,0]
+             create-intcode-vm run :outputs first))))
