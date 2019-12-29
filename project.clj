@@ -13,7 +13,8 @@
              :day-06 {:main day-06.main}
              :day-07 {:main day-07.main}
              :day-08 {:main day-08.main}
-             :day-09 {:main day-09.main}}
+             :day-09 {:main day-09.main}
+             :day-10 {:main day-10.main}}
 
   :test-paths ["src"]
 
@@ -27,4 +28,5 @@
             "run-day-06" ["with-profile" "day-06" "run"]
             "run-day-07" ["with-profile" "day-07" "run"]
             "run-day-08" ["with-profile" "day-08" "run"]
-            "run-day-09" ["with-profile" "day-09" "run"]})
+            "run-day-09" ["with-profile" "day-09" "run"]
+            "run-day-10" ["with-profile" "day-10" "run"]})
