@@ -1,6 +1,6 @@
 (ns day-07.amp-test
   (:require [clojure.test :refer :all]
-            [day-07.intcode-vm-state :refer [create-intcode-vm halted?]]
+            [intcode.vm-state :refer [create-intcode-vm halted?]]
             [day-07.amp :refer :all]))
 
 (deftest amp-chains-short-programs

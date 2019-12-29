@@ -1,6 +1,6 @@
 (ns day-07.amp
-  (:require [day-07.intcode-vm-state :refer [create-intcode-vm add-inputs drop-outputs needs-input? read-input halted?]]
-            [day-07.intcode-run :refer [run step]]))
+  (:require [intcode.vm-state :refer [create-intcode-vm add-inputs drop-outputs needs-input? read-input halted?]]
+            [intcode.run :refer [run step]]))
 
 (defn permutations [colls]
   (if (= 1 (count colls))

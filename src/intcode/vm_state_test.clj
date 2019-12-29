@@ -1,7 +1,7 @@
-(ns day-09.intcode-vm-state-test
+(ns intcode.vm-state-test
   (:require [clojure.test :refer :all]
-            [day-09.intcode-run :refer [run]]
-            [day-09.intcode-vm-state :refer :all]))
+            [intcode.run :refer [run]]
+            [intcode.vm-state :refer :all]))
 
 (deftest parsing-first-instruction-value
   (testing "extracting opcode"

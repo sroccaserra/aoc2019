@@ -1,6 +1,6 @@
-(ns day-09.intcode-run
-  (:require [day-09.intcode-vm-state :refer [halted?]]
-            [day-09.intcode-instruction
+(ns intcode.run
+  (:require [intcode.vm-state :refer [halted?]]
+            [intcode.instruction
              :refer [read-instruction execute-instruction]]))
 
 (defn step [vm-state]

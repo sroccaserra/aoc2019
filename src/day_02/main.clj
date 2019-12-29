@@ -2,8 +2,8 @@
   (:gen-class)
   (:require [clojure.string :as str]
             [aoc-common-cli :refer [read-lines-from-stdin]]
-            [day-02.intcode
-             :refer [create-intcode-vm restore-state run value-at]]))
+            [intcode.vm-state :refer [create-intcode-vm]]
+            [intcode.run :refer [run]]))
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
@@ -16,10 +16,10 @@
     (println (for [noun (range 99)
                    verb (range 99)
                    :let [result (-> program
+                                    (assoc 1 noun 2 verb)
                                     create-intcode-vm
-                                    (restore-state noun verb)
                                     run
-                                    (value-at 0))]
+                                    (get-in [:memory 0]))]
                    :when (= 19690720 result)]
                {:result result
                 :noun noun

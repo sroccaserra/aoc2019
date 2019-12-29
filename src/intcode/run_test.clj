@@ -1,7 +1,7 @@
-(ns day-09.intcode-run-test
+(ns intcode.run-test
   (:require [clojure.test :refer :all]
-            [day-09.intcode-vm-state :refer [create-intcode-vm add-input]]
-            [day-09.intcode-run :refer :all]))
+            [intcode.vm-state :refer [create-intcode-vm add-input]]
+            [intcode.run :refer :all]))
 
 (def simple-program [1 0 0 0 99])
 

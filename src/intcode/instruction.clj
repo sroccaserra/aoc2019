@@ -1,5 +1,5 @@
-(ns day-09.intcode-instruction
-  (:require [day-09.intcode-vm-state :refer :all]))
+(ns intcode.instruction
+  (:require [intcode.vm-state :refer :all]))
 
 (defprotocol Instruction
   (length [this])
