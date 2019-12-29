@@ -1,6 +1,6 @@
 (ns day-09.intcode-instruction-test
   (:require [clojure.test :refer :all]
-            [day-09.intcode-vm-state :refer [create-intcode-vm]]
+            [day-09.intcode-vm-state :refer [create-intcode-vm adjust-relative-base]]
             [day-09.intcode-instruction :refer :all]))
 
 (deftest reading-instructions
@@ -33,6 +33,13 @@
   (testing "reading input"
     (let [vm (create-intcode-vm [3 0 99] :inputs [77])]
       (is (= (->InputInstruction 0)
+             (read-instruction vm)))))
+
+  (testing "reading input relative mode"
+    (let [vm (-> [203 0 99 0]
+                 (create-intcode-vm :inputs [77])
+                 (adjust-relative-base 3))]
+      (is (= (->InputInstruction 3)
              (read-instruction vm))))))
 
 (deftest testing-jumps

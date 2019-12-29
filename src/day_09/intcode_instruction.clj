@@ -26,11 +26,11 @@
         (increment-pc (length this)))))
 
 (defn create-math-instruction [operation vm-state parameter-modes]
-  (let [[mode-p-1 mode-p-2] parameter-modes]
+  (let [[mode-p-1 mode-p-2 mode-p-3] parameter-modes]
     (->MathInstruction operation
                        (parameter-value vm-state 1 mode-p-1)
                        (parameter-value vm-state 2 mode-p-2)
-                       (parameter-value vm-state 3 immediate-mode))))
+                       (parameter-address vm-state 3 mode-p-3))))
 
 ;; Input instruction
 
@@ -43,8 +43,9 @@
         drop-input
         (increment-pc (length this)))))
 
-(defn create-input-instruction [vm-state _]
-  (->InputInstruction (parameter-value vm-state 1 immediate-mode)))
+(defn create-input-instruction [vm-state parameter-modes]
+  (->InputInstruction (parameter-address vm-state
+                                         1 (first parameter-modes))))
 
 ;; Output instruction
 
@@ -57,7 +58,7 @@
         (increment-pc (length this)))))
 
 (defn create-output-instruction [vm-state parameter-modes]
-  (let [mode-p-1 (parameter-modes 0)]
+  (let [mode-p-1 (first parameter-modes)]
     (->OutputInstruction (parameter-value vm-state 1 mode-p-1))))
 
 ;; Jumping instructions
@@ -87,11 +88,11 @@
         (increment-pc (length this)))))
 
 (defn create-comparison-instruction [comparison-test vm-state parameter-modes]
-  (let [[mode-p-1 mode-p-2] parameter-modes]
+  (let [[mode-p-1 mode-p-2 mode-p-3] parameter-modes]
     (->ComparisonInstruction comparison-test
                              (parameter-value vm-state 1 mode-p-1)
                              (parameter-value vm-state 2 mode-p-2)
-                             (parameter-value vm-state 3 immediate-mode))))
+                             (parameter-address vm-state 3 mode-p-3))))
 
 ;; Relative base instruction
 
