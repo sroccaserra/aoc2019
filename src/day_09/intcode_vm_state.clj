@@ -5,6 +5,9 @@
 (def position-mode 0)
 (def immediate-mode 1)
 
+(defmethod print-method clojure.lang.PersistentQueue [this ^java.io.Writer w]
+  (.write w (str (vec this))))
+
 (defn create-intcode-vm [program & {:keys [inputs]
                                     :or {inputs []}}]
   {:memory program
