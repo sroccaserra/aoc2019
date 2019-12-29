@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [clojure.string :as str]
             [aoc-common-cli :refer [read-lines-from-stdin]]
-            [day-07.amp :refer [run-amp-chain permutations]]))
+            [day-07.amp :refer [run-amp-chain run-amp-loop permutations]]))
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
@@ -13,4 +13,6 @@
                     first
                     read-ints-from-line)]
     (println (apply max (for [phase-settings (permutations [0 1 2 3 4])]
-                          (run-amp-chain program phase-settings 0))))))
+                          (run-amp-chain program phase-settings 0)))
+             (apply max (for [phase-settings (permutations [5 6 7 8 9])]
+                          (run-amp-loop program phase-settings 0))))))

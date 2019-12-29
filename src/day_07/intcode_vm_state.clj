@@ -75,8 +75,20 @@
 (defn add-input [{inputs :inputs :as vm-state} input-value]
   (assoc vm-state :inputs (conj inputs input-value)))
 
+(defn add-inputs [{inputs :inputs :as vm-state} input-values]
+  (if (empty? input-values)
+    vm-state
+    (recur (add-input vm-state (first input-values)) (rest input-values))))
+
 (defn drop-input [{inputs :inputs :as vm-state}]
   (assoc vm-state :inputs (pop inputs)))
 
+(defn needs-input? [vm-state]
+  (and (nil? (read-input vm-state))
+       (= 3 (read-opcode vm-state))))
+
 (defn add-output [{outputs :outputs :as vm-state} output-value]
   (assoc vm-state :outputs (conj outputs output-value)))
+
+(defn drop-outputs [vm-state]
+  (assoc vm-state :outputs []))
