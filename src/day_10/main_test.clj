@@ -8,6 +8,17 @@
                 "....#"
                 "...##"])
 
+(def example-letters ["#........."
+                      "...A......"
+                      "...B..a..."
+                      ".EDCG....a"
+                      "..F.c.b..."
+                      ".....c...."
+                      "..efd.c.gb"
+                      ".......c.."
+                      "....f...c."
+                      "...e..d..c"])
+
 (def example-2 ["......#.#."
                 "#..#.#...."
                 "..#######."
@@ -67,9 +78,9 @@
        (= expected
           (-> example
               parse-asteroid-positions
-              count-detected-from-best-location))
-       example-1 8
-       example-2 33
-       example-3 35
-       example-4 41
-       example-5 210))
+              find-best-location))
+       example-1 {:x 3 :y 4 :nb-seen 8}
+       example-2 {:x 5 :y 8 :nb-seen 33}
+       example-3 {:x 1 :y 2 :nb-seen 35}
+       example-4 {:x 6 :y 3 :nb-seen 41}
+       example-5 {:x 11 :y 13 :nb-seen 210}))

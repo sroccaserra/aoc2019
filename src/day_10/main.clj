@@ -8,30 +8,30 @@
          (for [[row-number row] (map-indexed vector lines)]
            (keep-indexed #(when (= \# %2) {:x %1 :y row-number}) row))))
 
-(defn slope [point-1 point-2]
-  (let [dx (apply - (map :x [point-2 point-1]))
-        dy (apply - (map :y [point-2 point-1]))]
+(defn slope-with-quadrant-info [point-1 point-2]
+  (let [dx (- (:x point-2) (:x point-1))
+        dy (- (:y point-1) (:y point-2))]
     (cond
       (and (zero? dx) (zero? dy)) nil
-      (zero? dx) (if (pos? dy)
-                   :infinite
-                   :-infinite)
-      (zero? dy) (if (pos? dx)
-                   :zero
-                   :-zero)
-      :else (/ dy dx))))
+      (zero? dx) [:inf (pos? dx) (pos? dy)]
+      :else [(/ dy dx) (pos? dx) (pos? dy)])))
+
+(defn slopes-for-asteroid [asteroid asteroids]
+  (map #(slope-with-quadrant-info asteroid %) asteroids))
 
 (defn count-unique-slopes [asteroid asteroids]
-  (->> (map #(slope asteroid %) asteroids)
+  (->> asteroids
+       (slopes-for-asteroid asteroid)
        (filter (comp not nil?))
        set
        count))
 
-(defn count-detected-from-best-location [asteroids]
+(defn find-best-location [asteroids]
   (->> asteroids
-       (map #(count-unique-slopes % asteroids))
-       (apply max)))
+       (map #(merge % {:nb-seen (count-unique-slopes % asteroids)}))
+       (apply max-key :nb-seen)))
 
 (defn -main [& args]
-  (let [asteroids (parse-asteroid-positions (read-lines-from-stdin))]
-    (println (count-detected-from-best-location asteroids))))
+  (let [asteroids (parse-asteroid-positions (read-lines-from-stdin))
+        best-location (find-best-location asteroids)]
+    (println best-location)))
