@@ -1,18 +1,11 @@
 (ns day-02.main
   (:gen-class)
-  (:require [clojure.string :as str]
-            [aoc-common-cli :refer [read-lines-from-stdin]]
+  (:require [aoc-common-cli :refer [read-intcode-program-from-stdin]]
             [intcode.vm-state :refer [create-intcode-vm]]
             [intcode.run :refer [run]]))
 
-(defn read-ints-from-line [line]
-  (->> (str/split line #",")
-       (mapv #(Integer/parseInt %))))
-
 (defn -main [& args]
-  (let [program (-> (read-lines-from-stdin)
-                    first
-                    read-ints-from-line)]
+  (let [program (read-intcode-program-from-stdin)]
     (println (for [noun (range 99)
                    verb (range 99)
                    :let [result (-> program

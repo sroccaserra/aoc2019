@@ -1,6 +1,6 @@
-(ns day-07.main-test
+(ns aoc-common-cli-test
   (:require [clojure.test :refer :all]
-            [day-07.main :refer :all]))
+            [aoc-common-cli :refer :all]))
 
 (deftest reading-ints-from-input
   (testing "parsing a string of coma-separated ints"
