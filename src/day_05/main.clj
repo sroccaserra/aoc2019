@@ -8,4 +8,4 @@
   (-> (read-intcode-program-from-stdin)
       (create-intcode-vm :inputs [5])
       run
-      println))
+      prn))

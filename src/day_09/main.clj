@@ -9,8 +9,8 @@
     (-> (create-intcode-vm program :inputs [1] :memory-size 1028)
         run
         :outputs
-        println)
+        prn)
     (-> (create-intcode-vm program :inputs [2] :memory-size 1076)
         run
         :outputs
-        println)))
+        prn)))

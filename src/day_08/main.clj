@@ -33,7 +33,7 @@
                                       :nb-twos (count-values layer 2)})
                          layers)
         layer-with-fewest-zeroes (first (sort-by :nb-zeros layer-stats))]
-    (println (* (:nb-ones layer-with-fewest-zeroes)
-                (:nb-twos layer-with-fewest-zeroes)))
+    (prn (* (:nb-ones layer-with-fewest-zeroes)
+            (:nb-twos layer-with-fewest-zeroes)))
     (doseq [row (partition w (reduce combine-layers layers))]
-      (println row))))
+      (prn row))))

@@ -35,5 +35,5 @@
                        str/join
                        edn/read-string)
         orbiters (keys parent-map)]
-    (println (reduce + (map #(count-ancestors parent-map %) orbiters))
-             (count-orbital-transfers parent-map "YOU" "SAN"))))
+    (prn (reduce + (map #(count-ancestors parent-map %) orbiters))
+         (count-orbital-transfers parent-map "YOU" "SAN"))))

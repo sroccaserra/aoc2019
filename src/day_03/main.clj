@@ -9,5 +9,5 @@
   (let [[path-1 path-2] (->> (read-lines-from-stdin)
                              (map parse-commands)
                              (map compute-all-points))]
-    (println (find-closest-intersection path-1 path-2)
-             (find-shortest-wire-intersection path-1 path-2))))
+    (prn (find-closest-intersection path-1 path-2)
+         (find-shortest-wire-intersection path-1 path-2))))

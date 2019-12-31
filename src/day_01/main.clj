@@ -8,6 +8,6 @@
   (map #(Integer/parseInt %) lines))
 
 (defn -main [& args]
-  (println (->> (read-lines-from-stdin)
-                parse-lines-as-integers
-                compute-required-fuel-for-module-masses)))
+  (prn (->> (read-lines-from-stdin)
+            parse-lines-as-integers
+            compute-required-fuel-for-module-masses)))

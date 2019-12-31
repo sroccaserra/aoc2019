@@ -9,4 +9,4 @@
     (-> (create-intcode-vm program :inputs [0] :memory-size 1024)
         run-until-needs-input
         :outputs
-        println)))
+        prn)))

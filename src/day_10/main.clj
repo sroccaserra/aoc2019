@@ -63,5 +63,5 @@
         sorted-asteroids (->> asteroids
                               (add-relative-angle-and-distance best-location)
                               sort-first-round-by-angle)]
-    (println best-location)
-    (println (nth sorted-asteroids 199))))
+    (prn best-location)
+    (prn (nth sorted-asteroids 199))))
