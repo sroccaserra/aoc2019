@@ -20,7 +20,7 @@
                                 0)))))
 
 (deftest running-amp-loop
-  (is (nil? (run-amp-loop [3 0 3 1 99] [5 6 7 8 9] 0))))
+  (is (zero? (run-amp-loop [3 0 99] [5 6 7 8 9] 0))))
 
 (deftest amp-chains-short-programs
   (testing "first example program"

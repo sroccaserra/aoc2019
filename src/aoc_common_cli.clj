@@ -6,7 +6,7 @@
 
 (defn read-ints-from-line [line]
   (->> (str/split line #",")
-       (mapv #(Integer/parseInt %))))
+       (mapv #(Long/parseLong %))))
 
 (defn read-intcode-program-from-stdin []
   (-> (read-lines-from-stdin)

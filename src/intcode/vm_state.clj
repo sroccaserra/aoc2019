@@ -46,11 +46,11 @@
 
 (defn parse-first-instruction-value [first-value]
   (let [reverse-digits (split-to-reverse-digits first-value)]
-    {:opcode (+ (get reverse-digits 0)
-                (* 10 (get reverse-digits 1 0)))
-     :parameter-modes [(get reverse-digits 2 0)
-                       (get reverse-digits 3 0)
-                       (get reverse-digits 4 0)]}))
+    {:opcode (+ (nth reverse-digits 0)
+                (* 10 (nth reverse-digits 1 0)))
+     :parameter-modes [(nth reverse-digits 2 0)
+                       (nth reverse-digits 3 0)
+                       (nth reverse-digits 4 0)]}))
 
 (defn- read-opcode [vm-state]
   (-> vm-state
@@ -80,6 +80,7 @@
 ;; Inputs and outputs
 
 (defn read-input [vm-state]
+  {:pre [(not (empty? (:inputs vm-state)))]}
   (peek (:inputs vm-state)))
 
 (defn add-input [{inputs :inputs :as vm-state} input-value]
@@ -94,7 +95,7 @@
   (assoc vm-state :inputs (pop inputs)))
 
 (defn needs-input? [vm-state]
-  (and (nil? (read-input vm-state))
+  (and (empty? (:inputs vm-state))
        (= 3 (read-opcode vm-state))))
 
 (defn add-output [{outputs :outputs :as vm-state} output-value]
