@@ -1,6 +1,6 @@
 (ns intcode.run-test
   (:require [clojure.test :refer :all]
-            [intcode.vm-state :refer [create-intcode-vm add-input]]
+            [intcode.vm-state :refer [create-intcode-vm add-input halted?]]
             [intcode.run :refer :all]))
 
 (def simple-program [1 0 0 0 99])
@@ -84,6 +84,15 @@
                      :outputs)]
       (is (= [77]
              outputs)))))
+
+(deftest running-until-needs-input
+  (testing "needing input from the start"
+    (let [vm (create-intcode-vm [3 0 99])]
+      (is (= vm (run-until-needs-input vm)))))
+
+  (testing "should run to completion if not needing input"
+    (let [vm (create-intcode-vm [3 0 99] :inputs [77])]
+      (is (halted? (run-until-needs-input vm))))))
 
 (deftest jumping
   (testing "jz immediate mode"

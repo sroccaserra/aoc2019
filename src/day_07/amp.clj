@@ -1,6 +1,6 @@
 (ns day-07.amp
   (:require [intcode.vm-state :refer [create-intcode-vm add-inputs drop-outputs needs-input? read-input halted?]]
-            [intcode.run :refer [run step]]))
+            [intcode.run :refer [run run-until-needs-input]]))
 
 (defn permutations [colls]
   (if (= 1 (count colls))
@@ -19,12 +19,6 @@
                      :outputs first)]
       (recur program (rest phase-settings) output))))
 
-(defn run-until-need-input [vm-state]
-  (cond
-    (halted? vm-state) vm-state
-    (needs-input? vm-state) vm-state
-    :else (recur (step vm-state))))
-
 (defn run-amp-loop
   ([program phase-settings input-signal]
    (let [vm-seq (mapv #(create-intcode-vm program :inputs [%]) phase-settings)]
@@ -33,7 +27,7 @@
   ([{first-vm 0 second-vm 1 :as vm-seq}]
    (if (halted? first-vm)
      (read-input first-vm)
-     (let [running-vm (run-until-need-input first-vm)
+     (let [running-vm (run-until-needs-input first-vm)
            results (:outputs running-vm)
            first-vm' (drop-outputs running-vm)
            second-vm' (add-inputs second-vm results)]
