@@ -64,22 +64,18 @@
 
 ;; Parameters
 
-(defn parameter-value [{pc :pc :as vm-state} n mode]
-  {:pre [(<= n 3)]}
-  (let [value (read-int-at vm-state (+ n pc))]
-  (condp = mode
-    position-mode (read-int-at vm-state value)
-    immediate-mode value
-    relative-mode (read-int-at vm-state (+ value (:relative-base vm-state)))
-    :else (throw (AssertionError. "Unsupported mode.")))))
-
 (defn parameter-address [{pc :pc :as vm-state} n mode]
   {:pre [(<= n 3)]}
-  (let [value (read-int-at vm-state (+ n pc))]
+  (let [pointer-to-param (+ n pc)]
     (condp = mode
-      position-mode value
-      immediate-mode (throw (AssertionError. "Parameter address doesn't support immediate mode."))
-      relative-mode (+ value (:relative-base vm-state)))))
+      position-mode (read-int-at vm-state pointer-to-param)
+      immediate-mode pointer-to-param
+      relative-mode (+ (read-int-at vm-state pointer-to-param)
+                       (:relative-base vm-state))
+      :else (throw (AssertionError. (str "Unsupported mode: " mode))))))
+
+(defn parameter-value [vm-state n mode]
+  (read-int-at vm-state (parameter-address vm-state n mode)))
 
 ;; Inputs and outputs
 
