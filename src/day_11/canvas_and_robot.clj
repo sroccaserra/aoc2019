@@ -1,7 +1,7 @@
 (ns day-11.canvas-and-robot)
 
-(def colors {0 :black
-             1 :white})
+(def black 0)
+(def white 1)
 
 (def turns {0 :left
             1 :right})
@@ -19,13 +19,15 @@
   (let [{:keys [dx dy]} (directions direction)]
     (assoc robot :x (+ x dx) :y (+ y dy))))
 
+(defn read-robot-color [{{:keys [x y]} :robot canvas :canvas}]
+  (get canvas {:x x :y y} black))
+
 (defn create-canvas-and-robot []
   {:canvas {}
    :robot {:x 0 :y 0 :direction \^}})
 
 (defn update-canvas-and-robot [{robot :robot :as c-and-r} [color turn]]
-  (let [point (select-keys robot [:x :y])
-        color (colors color)]
+  (let [point (select-keys robot [:x :y])]
     (-> c-and-r
         (assoc-in [:canvas point] color)
         (assoc :robot (-> robot
