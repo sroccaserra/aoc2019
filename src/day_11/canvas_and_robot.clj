@@ -22,8 +22,8 @@
 (defn read-robot-color [{{:keys [x y]} :robot canvas :canvas}]
   (get canvas {:x x :y y} black))
 
-(defn create-canvas-and-robot []
-  {:canvas {}
+(defn create-canvas-and-robot [starting-color]
+  {:canvas {{:x 0 :y 0} starting-color}
    :robot {:x 0 :y 0 :direction \^}})
 
 (defn update-canvas-and-robot [{robot :robot :as c-and-r} [color turn]]
@@ -33,3 +33,14 @@
         (assoc :robot (-> robot
                           (turn-robot (turns turn))
                           advance-robot)))))
+
+(defn canvas-as-pbm [{canvas :canvas}]
+  (let [xs (map :x (keys canvas))
+        ys (map :y (keys canvas))
+        x-min (apply min xs)
+        x-max (apply max xs)
+        y-min (apply min ys)
+        y-max (apply max ys)]
+    (for [y (range y-min (inc y-max))]
+      (concat (for [x (range x-min (inc x-max))]
+        (get canvas {:x x :y y} 0))))))

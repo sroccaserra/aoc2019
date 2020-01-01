@@ -16,9 +16,13 @@
 
 (defn -main [& args]
   (let [program (read-intcode-program-from-stdin)
-        c-and-r (create-canvas-and-robot)
-        vm (create-intcode-vm program :inputs [0] :memory-size 1024)]
-    (-> (paint-canvas c-and-r vm)
+        c-and-r-part-1 (create-canvas-and-robot black)
+        c-and-r-part-2 (create-canvas-and-robot white)
+        vm (create-intcode-vm program :memory-size 1024)]
+    (-> (paint-canvas c-and-r-part-1 (add-input vm 0))
         :canvas
         count
-        prn)))
+        prn)
+    (run! prn (-> (paint-canvas c-and-r-part-2 (add-input vm 1))
+                  (canvas-as-pbm)
+                  reverse))))
