@@ -31,11 +31,16 @@ Use this command, choosing the day number you want:
 
 - I can access the Clojure doc from the REPL: [doc][doc], [find-doc][find-doc], [apropos][apropos].
 
+- I can use [doto][doto] as a kind of [tap][tap] or [kestrel][kestrel].
+
+- I can use [run!][run!] to print each item in a lazy collection on a new line.
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
 - <https://github.com/jakemcc/lein-test-refresh>
 - <https://clojure.github.io/clojure/clojure.test-api.html>
+- <https://stuartsierra.com/2015/08/25/clojure-donts-lazy-effects>
 
 [fn]: https://clojure.org/reference/special_forms#fn
 [destruct]: https://clojure.org/guides/destructuring
@@ -43,3 +48,7 @@ Use this command, choosing the day number you want:
 [doc]: https://clojuredocs.org/clojure.repl/doc
 [find-doc]: https://clojuredocs.org/clojure.repl/find-doc
 [apropos]: https://clojuredocs.org/clojure.repl/apropos
+[doto]: https://clojuredocs.org/clojure.core/doto
+[tap]: https://ruby-doc.org/core-2.1.5/Object.html#method-i-tap
+[kestrel]: https://github.com/raganwald-deprecated/homoiconic/blob/master/2008-10-29/kestrel.markdown#readme
+[run!]: https://clojuredocs.org/clojure.core/run!
