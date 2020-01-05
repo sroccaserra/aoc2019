@@ -19,10 +19,12 @@
 
 ;; Memory
 
-(defn- read-int-at [vm-state address]
+(defn read-int-at [vm-state address]
+  {:pre [(< address (count (:memory vm-state)))]}
   (get-in vm-state [:memory address]))
 
 (defn write-int-at [vm-state address value]
+  {:pre [(<= address (count (:memory vm-state)))]}
   (assoc-in vm-state [:memory address] value))
 
 ;; Program Counter
