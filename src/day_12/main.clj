@@ -92,9 +92,9 @@
 ;; main
 
 (defn -main [& args]
-  (-> (iterate step moons)
-      (nth 1000)
-      (doto prn)
-      system-energy
-      prn)
-  (prn (find-repeating-state #{} 0 moons)))
+  (time (-> (iterate step moons)
+            (nth 1000)
+            (doto prn)
+            system-energy
+            prn))
+  (comment prn (find-repeating-state #{} 0 moons)))
