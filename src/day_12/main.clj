@@ -12,9 +12,6 @@
 
 ;; math
 
-(defn point-3d-add [p-1 p-2]
-  (mapv + p-1 p-2))
-
 (defn combinations [m n]
   (letfn [(comb-aux [m start]
             (if (= 1 m)
@@ -58,7 +55,7 @@
 ;; moons velocity
 
 (defn apply-velocity [moons]
-  (map #(assoc % :position (point-3d-add (:position %) (:velocity %)))
+  (map #(assoc % :position (mapv + (:position %) (:velocity %)))
        moons))
 
 ;; system update
@@ -83,11 +80,38 @@
 
 ;; part 2
 
-(defn find-repeating-state [previous-states n moons]
-  (if (zero? (mod n 10000)) (prn n))
-  (if (contains? previous-states moons)
-    n
-    (recur (conj previous-states moons) (inc n) (step moons))))
+(defn slice-axis [axis moons]
+  (for [{:keys [position velocity]} moons]
+    {:position [(nth position axis)]
+     :velocity [(nth velocity axis)]}))
+
+(defn find-axis-cycle
+  ([axis moons]
+   (let [slice (slice-axis axis moons)]
+     (find-axis-cycle slice 1 (step slice))))
+  ([first-state n slice]
+   (if (zero? (mod n 10000)) (println n "..."))
+   (if (= first-state slice)
+     (doto n prn)
+     (recur first-state (inc n) (step slice)))))
+
+(defn gcd
+      [a b]
+      (if (zero? b)
+      a
+      (recur b, (mod a b))))
+
+(defn lcm-two
+      [a b]
+      (/ (* a b) (gcd a b)))
+
+(defn lcm [& v] (reduce lcm-two v))
+
+(defn find-repeating-state [moons]
+  (let [x-cycle (find-axis-cycle 0 moons)
+        y-cycle (find-axis-cycle 1 moons)
+        z-cycle (find-axis-cycle 2 moons)]
+    (lcm x-cycle y-cycle z-cycle)))
 
 ;; main
 
@@ -97,4 +121,4 @@
             (doto prn)
             system-energy
             prn))
-  (comment prn (find-repeating-state #{} 0 moons)))
+  (prn (find-repeating-state moons)))
