@@ -81,6 +81,14 @@
 (defn system-energy [moons]
   (apply + (map moon-energy moons)))
 
+;; part 2
+
+(defn find-repeating-state [previous-states n moons]
+  (if (zero? (mod n 10000)) (prn n))
+  (if (contains? previous-states moons)
+    n
+    (recur (conj previous-states moons) (inc n) (step moons))))
+
 ;; main
 
 (defn -main [& args]
@@ -88,4 +96,5 @@
       (nth 1000)
       (doto prn)
       system-energy
-      prn))
+      prn)
+  (prn (find-repeating-state #{} 0 moons)))
