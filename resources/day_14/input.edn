@@ -1,0 +1,62 @@
+{
+SRPZP {:quantity 4 :materials { PQJGK 29 }}
+ZVSMJ {:quantity 6 :materials { LDSMT 4  XKJP 6 }}
+DWZH {:quantity 7 :materials { CFVS 2  CGCPW 9 }}
+MGLKL {:quantity 1 :materials { FRTJG 1  VQWZC 1 }}
+RLZR {:quantity 4 :materials { RGKB 4  GCTBC 3 }}
+GCTBC {:quantity 9 :materials { LGLCP 2 }}
+XVSRT {:quantity 2 :materials { FRTJG 12  DFPW 3 }}
+VQWZC {:quantity 3 :materials { VBXFG 1 }}
+DGMZB {:quantity 8 :materials { BVHM 1  GCTBC 1 }}
+FRTJG {:quantity 7 :materials { JQNL 3  DFPW 7 }}
+HBLQT {:quantity 5 :materials { VXNP 4  BHQN 6 }}
+JZPMK {:quantity 7 :materials { RGKB 2  FTBNQ 27  XNBR 1 }}
+STCX {:quantity 9 :materials { NMSKF 11  JHDHS 4  HKMV 6 }}
+NVXTP {:quantity 5 :materials { ORE 129 }}
+LKXML {:quantity 3 :materials { XNBR 5  BVHM 13 }}
+HXFCJ {:quantity 6 :materials { GPBG 13  LDSMT 4  SBPM 3 }}
+FTBNQ {:quantity 4 :materials { JHDHS 1  XVSRT 1 }}
+PSJK {:quantity 5 :materials { HRLWP 6  LKXML 6 }}
+VRQD {:quantity 1 :materials { PDHVG 19  HRLWP 5 }}
+SBPM {:quantity 7 :materials { QLKTZ 1  FTBNQ 3 }}
+XKJP {:quantity 3 :materials { VXNP 2 }}
+LMVF {:quantity 8 :materials { XVSRT 7  SRPZP 4 }}
+WZSTV {:quantity 2 :materials { BFCZ 20  CFVS 1  RLZR 10  JTCHR 3  DWZH 8  GPBG 2 }}
+JQNL {:quantity 9 :materials { ORE 130 }}
+VBXFG {:quantity 4 :materials { ORE 100 }}
+RDSHN {:quantity 8 :materials { XNBR 4 }}
+CGCPW {:quantity 6 :materials { QLKTZ 8  XNBR 2  CDBTL 2 }}
+BFCZ {:quantity 6 :materials { CGCPW 7 }}
+BVHM {:quantity 1 :materials { VXNP 7  FTBNQ 7 }}
+DFXPB {:quantity 1 :materials { CSXD 15  HXFCJ 1 }}
+SWRV {:quantity 8 :materials { HBLQT 1  MGLKL 6  MCRW 1 }}
+FUEL {:quantity 1 :materials { JZPMK 56  FJWVP 2  DWZH 45  FTBNQ 26  LVGB 15  WZSTV 20  NMSKF 10  BZQGL 19 }}
+CDBTL {:quantity 4 :materials { JTCHR 12 }}
+PQJGK {:quantity 6 :materials { MGLKL 1 }}
+LDSMT {:quantity 1 :materials { NVXTP 1 }}
+GHVJ {:quantity 2 :materials { LGLCP 1  SWRV 3 }}
+SHTB {:quantity 4 :materials { RLZR 2  HXFCJ 11  DGMZB 4 }}
+HKMV {:quantity 6 :materials { GCTBC 1  RGKB 1  GHVJ 5 }}
+XNBR {:quantity 9 :materials { SRPZP 1 }}
+JHDHS {:quantity 2 :materials { ZVSMJ 1 }}
+NMSKF {:quantity 5 :materials { SWRV 9 }}
+XKBS {:quantity 3 :materials { NVXTP 1 }}
+GPBG {:quantity 2 :materials { BHQN 7 }}
+CMXK {:quantity 3 :materials { SBPM 12  FTBNQ 12  NMSKF 21 }}
+LGLCP {:quantity 4 :materials { PDHVG 2  ZVSMJ 12  GPBG 2 }}
+DFPW {:quantity 8 :materials { ORE 158 }}
+LVGB {:quantity 7 :materials { LDSMT 3  VRQD 6  BFCZ 5  CGCPW 5  HXFCJ 1  BVHM 3 }}
+PDHVG {:quantity 8 :materials { XKJP 1  XVSRT 1 }}
+BZQGL {:quantity 9 :materials { SBPM 5  SHTB 16  VRQD 3 }}
+CFVS {:quantity 4 :materials { HKMV 3  BVHM 1 }}
+VXNP {:quantity 7 :materials { JQNL 13 }}
+MCRW {:quantity 7 :materials { XVSRT 6  XKJP 1 }}
+BHQN {:quantity 4 :materials { XKBS 19  NVXTP 15 }}
+CSXD {:quantity 8 :materials { GPBG 2  CMXK 5  JHDHS 8 }}
+FJWVP {:quantity 7 :materials { HRLWP 15  LMVF 2  PSJK 2  XKBS 3  DFXPB 9  HKMV 1  LKXML 13  JZBR 1 }}
+JZBR {:quantity 8 :materials { RDSHN 3  CGCPW 1 }}
+JTCHR {:quantity 5 :materials { PQJGK 24 }}
+QLKTZ {:quantity 6 :materials { LDSMT 5  XVSRT 1 }}
+RGKB {:quantity 7 :materials { GPBG 17 }}
+HRLWP {:quantity 1 :materials { STCX 4 }}
+}
