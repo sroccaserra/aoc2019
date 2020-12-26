@@ -12,3 +12,4 @@ pom.xml.asc
 
 *.o
 src/day_12/day_12
+.stack-work
