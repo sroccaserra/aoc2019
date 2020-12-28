@@ -8,7 +8,7 @@ import Text.ParserCombinators.ReadP
 partOne reactions = oreForFuel grimoire 1
   where grimoire = foldl storeByProductName Map.empty reactions
 
-partTwo reactions = (fuelLowerBound, fuelUpperBound)
+partTwo reactions = searchFuel grimoire fuelLowerBound fuelUpperBound
   where grimoire = foldl storeByProductName Map.empty reactions
         forOneFuel = oreForFuel grimoire 1
         fuelLowerBound = div oneTrillion forOneFuel
@@ -44,6 +44,12 @@ oneTrillion = 1000000000000
 
 findFuelUpperBound grimoire n | oreForFuel grimoire n > oneTrillion = n
                               | otherwise = findFuelUpperBound grimoire (n*2)
+
+searchFuel _ lower upper | lower == pred upper = lower
+searchFuel grimoire lower upper | oreForMid < oneTrillion = searchFuel grimoire mid upper
+                                | otherwise = searchFuel grimoire lower mid
+  where mid = div (lower + upper) 2
+        oreForMid = oreForFuel grimoire mid
 
 -- Main
 
