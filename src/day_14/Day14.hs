@@ -5,8 +5,7 @@ import qualified Data.Map as Map
 import Data.Map (Map, (!))
 import Text.ParserCombinators.ReadP
 
-partOne reactions =
-  Map.lookup "ORE" $ until fullfiled (stepReaction grimoire) (Map.singleton "FUEL" 1)
+partOne reactions = oreForFuel grimoire 1
   where grimoire = foldl storeByProductName Map.empty reactions
 
 type Reagent = (String, Int)
@@ -14,6 +13,9 @@ type Reaction = (Reagent, [Reagent])
 
 type Grimoire = Map String Reaction
 type Required = Map String Int
+
+oreForFuel grimoire n = result ! "ORE"
+  where result = until fullfiled (stepReaction grimoire) (Map.singleton "FUEL" n)
 
 storeByProductName m r@((name,_),_) = Map.insert name r m
 
