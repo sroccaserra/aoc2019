@@ -8,6 +8,12 @@ import Text.ParserCombinators.ReadP
 partOne reactions = oreForFuel grimoire 1
   where grimoire = foldl storeByProductName Map.empty reactions
 
+partTwo reactions = (fuelLowerBound, fuelUpperBound)
+  where grimoire = foldl storeByProductName Map.empty reactions
+        forOneFuel = oreForFuel grimoire 1
+        fuelLowerBound = div oneTrillion forOneFuel
+        fuelUpperBound = findFuelUpperBound grimoire (div oneTrillion forOneFuel)
+
 type Reagent = (String, Int)
 type Reaction = (Reagent, [Reagent])
 
@@ -34,10 +40,14 @@ produce n reqs (name,q) = Map.insertWith (flip (-)) name (n*q) reqs
 
 require n reqs (name,q) = Map.insertWith (+) name (n*q) reqs
 
----
+oneTrillion = 1000000000000
+
+findFuelUpperBound grimoire n | oreForFuel grimoire n > oneTrillion = n
+                              | otherwise = findFuelUpperBound grimoire (n*2)
+
 -- Main
 
-main = interact $ show . partOne . map parseLine . lines
+main = interact $ show . partTwo . map parseLine . lines
 
 ---
 -- Parsing
