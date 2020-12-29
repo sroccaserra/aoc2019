@@ -12,3 +12,9 @@
   (-> (read-lines-from-stdin)
       first
       read-ints-from-line))
+
+(defn read-intcode-program-from-file [file]
+  (-> file
+      slurp
+      str/trim
+      read-ints-from-line))
