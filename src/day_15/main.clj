@@ -27,11 +27,10 @@
         (= 3 input) {:robot [(dec x) y] :visited (assoc visited [(dec x) y] \o)}
         (= 4 input) {:robot [(inc x) y] :visited (assoc visited [(inc x) y] \o)}))
 
-(defn update-maze-state [{robot :robot :as maze-state} input outputs]
-  (let [result (last outputs)]
-    (cond (= 0 result) (add-wall maze-state input)
-          (= 1 result) (advance-robot maze-state input)
-          (= 2 result) (add-oxygen maze-state))))
+(defn update-maze-state [{robot :robot :as maze-state} input output]
+  (cond (= 0 output) (add-wall maze-state input)
+        (= 1 output) (advance-robot maze-state input)
+        (= 2 output) (add-oxygen maze-state input)))
 
 (defn maze-state-as-string [{:keys [:visited :robot]}]
   (let [coords (keys visited)
@@ -67,8 +66,8 @@
   ([vm-state maze-state]
    (let [command (Long/parseLong (read-line))
          next-vm-state (run-until-needs-input (add-input vm-state command))
-         maze-state' (update-maze-state maze-state command
-                                        (:outputs next-vm-state))]
+         result (last (:outputs next-vm-state))
+         maze-state' (update-maze-state maze-state command result)]
      (draw-maze maze-state')
      (comment Thread/sleep 25)
      (if (has-found-oxygen maze-state')
