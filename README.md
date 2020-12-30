@@ -17,8 +17,16 @@ Use this command, choosing the day number you want:
 
 ## What I learned
 
+### General
+
 - Using `stdin` instead of a file is handy: I can use `echo` to easily pass
   various made up input to the `main` function.
+
+- If I have a strictly monotone function _f(x) = y_ that is hard to invert, to
+  compute the amount of _x_ provided by a large amount of _y_ I can use binary
+  search (see [day 14 code](src/day_14/Day14.hs), `f(fuel) = ore`).
+
+### Clojure
 
 - [fn][fn] defines a recursion point, so I don't need to `loop` to `recur` a
   `fn` (also true for `defn`).
