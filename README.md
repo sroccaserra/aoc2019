@@ -17,6 +17,8 @@ Use this command, choosing the day number you want:
 
 ## What I learned
 
+See also: <https://github.com/sroccaserra/aoc2020/blob/main/README.md#learnings>
+
 ### General
 
 - Using `stdin` instead of a file is handy: I can use `echo` to easily pass
