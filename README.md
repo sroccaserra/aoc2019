@@ -28,6 +28,27 @@ See also: <https://github.com/sroccaserra/aoc2020/blob/main/README.md#learnings>
   compute the amount of _x_ provided by a large amount of _y_ I can use binary
   search (see [day 14 code](src/day_14/Day14.hs), `f(fuel) = ore`).
 
+- The upper triangular matrix with only ones can be constructed by summing I and powers of J (J being the matrix with ones only above the diagonal)
+
+```
+[ 1 1 1 1 ]
+[ 0 1 1 1 ] = I + J + J^2 + J^3
+[ 0 0 1 1 ]
+[ 0 0 0 1 ]
+
+with:
+
+[ 0 1 0 0 ]
+[ 0 0 1 0 ] = J
+[ 0 0 0 1 ]
+[ 0 0 0 0 ]
+```
+
+- The nth diagonal of Pascal's Triangle can be computed iteratively: _x<sub>k</sub> = x<sub>k-1</sub>*(n+k)/k_
+    - <https://en.wikipedia.org/wiki/Pascal%27s_triangle>
+- There is a Pascal Matrix:
+    - <https://en.wikipedia.org/wiki/Pascal_matrix>
+
 ### Clojure
 
 - [fn][fn] defines a recursion point, so I don't need to `loop` to `recur` a
@@ -44,6 +65,16 @@ See also: <https://github.com/sroccaserra/aoc2020/blob/main/README.md#learnings>
 - I can use [doto][doto] as a kind of [tap][tap] or [kestrel][kestrel].
 
 - I can use [run!][run!] to print each item in a lazy collection on a new line.
+
+### Haskell
+
+- In `Data.Array`, `listArray` can construct an array using its previous values (sort of recrusively):
+
+```haskell
+fibs :: Array Int Integer
+fibs = listArray (0, n-1) $ 0 : 1 : [fibs!(i-1) + fibs!(i-2) | i <- [2..n-1]]
+  where n = 100
+```
 
 ### References
 
