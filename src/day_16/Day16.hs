@@ -24,14 +24,17 @@ partTwo xs = toNum $ map dec [0..7]
         toDrop = fromIntegral $ toNum $ take 7 xs
         subSignal = drop toDrop signal
         n = fromIntegral $ length subSignal
-        coeffs = elems (buildPascalTriangle99 n)
+        coeffs = elems (pascalTriangleDiagonal99 n)
         dec n = (`mod` 10) $ sum (zipWith (\x y -> (`mod` 10) $ x*y) ((take n (repeat 0)) ++ coeffs) subSignal)
 
 toNum = foldl1 ((+) . (*10))
 
--- Diagonal 99 of Pascal's Triangle, x_k = x_k-1*(99+k)/k
-buildPascalTriangle99 :: Integer -> Array Integer Integer
-buildPascalTriangle99 n = coeffs
+-- Diagonal 99 of Pascal's Triangle: x_k = x_k-1*(99+k)/k
+-- The lower half of the transformation matrix at the power 100 is an upper
+-- triangular matrix with these values, with the 1 (first element) starting on
+-- the diagonal.
+pascalTriangleDiagonal99 :: Integer -> Array Integer Integer
+pascalTriangleDiagonal99 n = coeffs
   where coeffs = listArray (0, n-1) $ 1:[div ((coeffs!(k-1))*(99+k)) k | k <- [1..n-1]]
 
 ---
@@ -40,4 +43,4 @@ buildPascalTriangle99 n = coeffs
 main = interact $ show . partTwo . parse
 
 parse :: String -> [Integer]
-parse = map read . map (:[]) . head . lines
+parse = map (read . (:[])) . head . lines
