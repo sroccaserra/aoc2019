@@ -5,9 +5,6 @@
             [intcode.vm-state :refer [create-intcode-vm add-input drop-outputs]]
             [intcode.run :refer [run run-until-needs-input]]))
 
-(defn reset-terminal []
-  (println  "\033c"))
-
 (defn display-scaffolding [lines]
   (->> lines
        (str/join "\n")
@@ -21,7 +18,7 @@
 
 (defn -main [& args]
   (let [program (read-intcode-program-from-file "resources/day_17/input.txt")
-        vm (create-intcode-vm program :inputs [] :memory-size 4000)]
+        vm (create-intcode-vm program :memory-size 4000)]
     (-> (:outputs (run-until-needs-input vm))
         as-lines
         display-scaffolding)))
