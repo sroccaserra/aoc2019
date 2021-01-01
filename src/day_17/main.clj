@@ -8,7 +8,13 @@
 (defn reset-terminal []
   (println  "\033c"))
 
+(defn display-scaffolding [outputs]
+  (->> outputs
+      (map char)
+      (apply str)
+      println))
+
 (defn -main [& args]
   (let [program (read-intcode-program-from-file "resources/day_17/input.txt")
         vm (create-intcode-vm program :inputs [] :memory-size 4000)]
-    (println (:outputs (run-until-needs-input vm)))))
+    (display-scaffolding (:outputs (run-until-needs-input vm)))))
