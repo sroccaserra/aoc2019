@@ -5,17 +5,34 @@ import sys
 
 def solve(lines):
     start = find_start(lines)
-    return reachable_key_distances(lines, start)
+    visited = {}
+    found_keys = ''
+    return find_minimum_distance(lines, start, visited, found_keys)
 
 
-def find_start(lines):
-    for y in range(len(lines)):
-        for x in range(len(lines[0])):
-            if char_at(lines, (x, y)) == '@':
-                return x, y
+def find_minimum_distance(lines, start, visited, found_keys):
+    sorted_keys = ''.join(sorted(found_keys))
+
+    if (start, sorted_keys) in visited:
+        return visited[start, sorted_keys]
+
+    if len(visited) % 10 == 0:
+        print(sorted_keys)
+
+    keys = reachable_key_distances(lines, start, found_keys)
+    if 0 == len(keys):
+        result = 0
+    else:
+        poss = []
+        for c, (distance, point) in keys.items():
+            d = find_minimum_distance(lines, point, visited, found_keys+c)
+            poss.append(distance + d)
+        result = min(poss)
+    visited[start, sorted_keys] = result
+    return result
 
 
-def reachable_key_distances(lines, start):
+def reachable_key_distances(lines, start, found_keys):
     distances = {start: 0}
     key_distances = {}
     to_explore = collections.deque([start])
@@ -33,15 +50,22 @@ def reachable_key_distances(lines, start):
 
             distances[neighbor] = distances[point] + 1
 
-            if is_door(c):
+            if is_door(c) and c.lower() not in found_keys:
                 continue
 
-            if is_key(c):
+            if is_key(c) and c not in found_keys:
                 key_distances[c] = distances[neighbor], neighbor
             else:
                 to_explore.append(neighbor)
 
     return key_distances
+
+
+def find_start(lines):
+    for y in range(len(lines)):
+        for x in range(len(lines[0])):
+            if char_at(lines, (x, y)) == '@':
+                return x, y
 
 
 def char_at(lines, point):
