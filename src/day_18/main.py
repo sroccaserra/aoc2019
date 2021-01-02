@@ -12,7 +12,7 @@ def find_start(lines):
     for y in range(len(lines)):
         for x in range(len(lines[0])):
             if char_at(lines, (x, y)) == '@':
-                return (x, y)
+                return x, y
 
 
 def reachable_key_distances(lines, start):
@@ -41,7 +41,7 @@ def reachable_key_distances(lines, start):
             else:
                 to_explore.append(neighbor)
 
-    return distances
+    return key_distances
 
 
 def char_at(lines, point):
@@ -68,19 +68,15 @@ def is_door(c):
 
 
 def display_maze(lines, distances):
-    for y in range(0, len(lines)):
-        for x in range(0, len(lines[0])):
-            p = (x, y)
-            if p in distances:
-                d = distances[p]
-                print(d % 10, end='')
-            else:
-                c = char_at(lines, p)
-                print(c, end='')
+    w = len(lines[0])
+    h = len(lines)
+    for y in range(0, h):
+        for x in range(0, w):
+            c = char_at(lines, (x, y))
+            print(c, end='')
         print('')
 
 
 if __name__ == '__main__' and not sys.flags.interactive:
     lines = [line.strip() for line in fileinput.input()]
-    distances = solve(lines)
-    display_maze(lines, distances)
+    print(solve(lines))
