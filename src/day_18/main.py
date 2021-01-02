@@ -5,7 +5,7 @@ import sys
 
 def solve(lines):
     start = find_start(lines)
-    return compute_distances(lines, start)
+    return reachable_key_distances(lines, start)
 
 
 def find_start(lines):
@@ -15,20 +15,32 @@ def find_start(lines):
                 return (x, y)
 
 
-def compute_distances(lines, start):
+def reachable_key_distances(lines, start):
     distances = {start: 0}
+    key_distances = {}
     to_explore = collections.deque([start])
     while to_explore:
         point = to_explore.popleft()
         for neighbor in neighbors(point):
+            c = char_at(lines, neighbor)
+
             if not is_in_bounds(lines, neighbor):
                 continue
-            if '#' == char_at(lines, neighbor):
+            if '#' == c:
                 continue
             if neighbor in distances:
                 continue
+
             distances[neighbor] = distances[point] + 1
-            to_explore.append(neighbor)
+
+            if is_door(c):
+                continue
+
+            if is_key(c):
+                key_distances[c] = distances[neighbor], neighbor
+            else:
+                to_explore.append(neighbor)
+
     return distances
 
 
@@ -45,6 +57,14 @@ def is_in_bounds(lines, point):
 def neighbors(point):
     x, y = point
     return [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
+
+
+def is_key(c):
+    return 'a' <= c <= 'z'
+
+
+def is_door(c):
+    return 'A' <= c <= 'Z'
 
 
 def display_maze(lines, distances):
