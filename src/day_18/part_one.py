@@ -1,16 +1,18 @@
+# See: https://github.com/sophiebits/adventofcode/blob/master/2019/day18.py
+
 import fileinput
 import collections
 import sys
 
 
-def solve(lines):
-    start = find_start(lines)
+def solve(maze):
+    start = find_start(maze)
     visited = {}
     found_keys = ''
-    return find_minimum_distance(lines, start, visited, found_keys)
+    return find_minimum_distance(maze, start, visited, found_keys)
 
 
-def find_minimum_distance(lines, start, visited, found_keys):
+def find_minimum_distance(maze, start, visited, found_keys):
     sorted_keys = ''.join(sorted(found_keys))
 
     if (start, sorted_keys) in visited:
@@ -19,29 +21,29 @@ def find_minimum_distance(lines, start, visited, found_keys):
     if len(visited) % 10 == 0:
         print(sorted_keys)
 
-    keys = reachable_key_distances(lines, start, found_keys)
+    keys = reachable_key_distances(maze, start, found_keys)
     if 0 == len(keys):
         result = 0
     else:
-        poss = []
+        choices = []
         for c, (distance, point) in keys.items():
-            d = find_minimum_distance(lines, point, visited, found_keys+c)
-            poss.append(distance + d)
-        result = min(poss)
+            d = find_minimum_distance(maze, point, visited, found_keys+c)
+            choices.append(distance + d)
+        result = min(choices)
     visited[start, sorted_keys] = result
     return result
 
 
-def reachable_key_distances(lines, start, found_keys):
+def reachable_key_distances(maze, start, found_keys):
     distances = {start: 0}
     key_distances = {}
     to_explore = collections.deque([start])
     while to_explore:
         point = to_explore.popleft()
         for neighbor in neighbors(point):
-            c = char_at(lines, neighbor)
+            c = char_at(maze, neighbor)
 
-            if not is_in_bounds(lines, neighbor):
+            if not is_in_bounds(maze, neighbor):
                 continue
             if '#' == c:
                 continue
@@ -61,21 +63,21 @@ def reachable_key_distances(lines, start, found_keys):
     return key_distances
 
 
-def find_start(lines):
-    for y in range(len(lines)):
-        for x in range(len(lines[0])):
-            if char_at(lines, (x, y)) == '@':
+def find_start(maze):
+    for y in range(len(maze)):
+        for x in range(len(maze[0])):
+            if char_at(maze, (x, y)) == '@':
                 return x, y
 
 
-def char_at(lines, point):
+def char_at(maze, point):
     x, y = point
-    return lines[y][x]
+    return maze[y][x]
 
 
-def is_in_bounds(lines, point):
+def is_in_bounds(maze, point):
     x, y = point
-    return (0 <= x < len(lines[0])) and (0 <= y < len(lines))
+    return (0 <= x < len(maze[0])) and (0 <= y < len(maze))
 
 
 def neighbors(point):
