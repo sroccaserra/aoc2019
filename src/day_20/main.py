@@ -6,8 +6,8 @@ A = ord('A')
 Z = ord('Z')
 
 
-def solve(lines):
-    m = create_labyrinth(lines)
+def solve_1(lines):
+    m = parse_labyrinth(lines)
     portals = find_portals(m)
     AA = portals['AA'][0]
     ZZ = portals['ZZ'][0]
@@ -52,7 +52,7 @@ def mark(m, wormholes, ZZ, AA):
             todo.put(neighbor)
 
 
-def create_labyrinth(lines):
+def parse_labyrinth(lines):
     m = dict()
     for y in range(H):
         line = lines[y]
@@ -111,4 +111,4 @@ def neighbors(m, wormholes, x, y):
 lines = [line for line in fileinput.input()]
 W = len(lines[0])
 H = len(lines)
-print(solve(lines))
+print(solve_1(lines))
