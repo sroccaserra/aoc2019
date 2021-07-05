@@ -1,3 +1,4 @@
+import Data.Array.ST
 import Data.Array.Unboxed
 import Data.Foldable
 
@@ -5,7 +6,8 @@ solve :: [String] -> Point
 solve xs = findStart grid
   where w = length $ head xs
         h = length xs
-        grid = Grid w h $ listArray (0, w*h - 1) $ concat xs
+        v = runSTUArray $ newListArray (0, w*h - 1) $ concat xs
+        grid = Grid w h v
 
 data Grid = Grid Int Int (UArray Int Char)
           deriving (Show)
