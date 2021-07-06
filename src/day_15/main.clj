@@ -78,4 +78,4 @@
   (let [program (read-intcode-program-from-file "resources/day_15/input.txt")
         vm (create-intcode-vm program :inputs [4] :memory-size 2659)]
     (println "Ready to explore maze.")
-    (explore-maze vm )))
+    (explore-maze vm)))

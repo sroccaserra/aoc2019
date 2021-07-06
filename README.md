@@ -51,6 +51,8 @@ with:
 
 ### Clojure
 
+-  For fast feedback, start a REPL and don't close it. Change the file and reload it, with ` (use 'day-21.main :reload) (-main)` for example.
+
 - [fn][fn] defines a recursion point, so I don't need to `loop` to `recur` a
   `fn` (also true for `defn`).
 
