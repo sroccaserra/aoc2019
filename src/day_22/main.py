@@ -8,16 +8,13 @@ NB_CARDS = 10007
 def main():
     lines = [line.strip() for line in fileinput.input()]
     shuffles = parse(lines)
-    deck = list(range(NB_CARDS))
-    result = solve_1(deck, shuffles)
-    print(result)
+    print(solve_1(2019, shuffles))
 
 
-def solve_1(deck, shuffles):
+def solve_1(i, shuffles):
     for shuffle in shuffles:
-        deck = shuffle(deck)
-    return deck.index(2019)
-    # return deck
+        i = shuffle(i)
+    return i
 
 
 def parse(lines):
@@ -27,30 +24,28 @@ def parse(lines):
 def parse_line(line):
     ws = line.split()
     if ws[0] == 'cut':
-        return lambda deck: cut(int(ws[1]), deck)
+        return lambda i: cut(int(ws[1]), i)
     elif ws[0] == 'deal':
         if ws[1] == 'into':
             return new_stack
         elif ws[1] == 'with':
-            return lambda deck: increment(int(ws[3]), deck)
+            return lambda i: increment(int(ws[3]), i)
 
     raise 'impossible'
 
 
-def cut(n, deck):
-    return deck[n:] + deck[:n]
+def cut(n, i):
+    return (i + NB_CARDS - n) % NB_CARDS
 
 
-def new_stack(deck):
-    deck.reverse()
-    return deck
+def new_stack(i):
+    return NB_CARDS - 1 - i
 
 
-def increment(n, deck):
-    result = [-1] * NB_CARDS
-    for i in range(NB_CARDS):
-        result[(i*n) % NB_CARDS] = deck[i]
-    return result
+def increment(n, i):
+    return (n * i) % NB_CARDS
+
+
 
 
 if __name__ == '__main__' and not sys.flags.interactive:
