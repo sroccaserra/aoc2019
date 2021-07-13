@@ -1,5 +1,6 @@
 import fileinput
 import sys
+from functools import reduce
 
 NB_CARDS = 10007
 # NB_CARDS = 10
@@ -12,9 +13,8 @@ def main():
 
 
 def solve_1(i, shuffles):
-    for shuffle in shuffles:
-        i = shuffle(i)
-    return i
+    shuffle = reduce(combine, shuffles, (1, 0))
+    return (shuffle[0]*i + shuffle[1]) % NB_CARDS
 
 
 def parse(lines):
@@ -24,28 +24,31 @@ def parse(lines):
 def parse_line(line):
     ws = line.split()
     if ws[0] == 'cut':
-        return lambda i: cut(int(ws[1]), i)
+        return cut(int(ws[1]))
     elif ws[0] == 'deal':
         if ws[1] == 'into':
-            return new_stack
+            return new_stack()
         elif ws[1] == 'with':
-            return lambda i: increment(int(ws[3]), i)
+            return increment(int(ws[3]))
 
     raise 'impossible'
 
 
-def cut(n, i):
-    return (i - n) % NB_CARDS
+# c(ax + b) + d -> cax + cb + d
+def combine(f, g):
+    return (f[0]*g[0], f[1]*g[0] + g[1])
 
 
-def new_stack(i):
-    return NB_CARDS - 1 - i
+def cut(n):
+    return (1, -n)
 
 
-def increment(n, i):
-    return (n * i) % NB_CARDS
+def new_stack():
+    return (-1, -1)
 
 
+def increment(n):
+    return (n, 0)
 
 
 if __name__ == '__main__' and not sys.flags.interactive:
