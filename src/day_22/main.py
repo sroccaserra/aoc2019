@@ -35,7 +35,7 @@ def parse_line(line):
 
 
 def cut(n, i):
-    return (i + NB_CARDS - n) % NB_CARDS
+    return (i - n) % NB_CARDS
 
 
 def new_stack(i):
