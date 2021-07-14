@@ -48,6 +48,7 @@ with:
     - <https://en.wikipedia.org/wiki/Pascal%27s_triangle>
 - There is a Pascal Matrix:
     - <https://en.wikipedia.org/wiki/Pascal_matrix>
+- Fermat's little theorem is useful to compute the modular inverse, see [day 22](src/day_22/main.py) comments
 
 ### Clojure
 

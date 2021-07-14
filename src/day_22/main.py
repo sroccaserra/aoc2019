@@ -80,18 +80,9 @@ def invert(f):
 def mul_inv(a, b):
     """
     - https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
+    - https://fr.wikipedia.org/wiki/Petit_th%C3%A9or%C3%A8me_de_Fermat
     """
-    b0 = b
-    x0, x1 = 0, 1
-    if b == 1:
-        return 1
-    while a > 1:
-        q = a // b
-        a, b = b, a % b
-        x0, x1 = x1 - q * x0, x0
-    if x1 < 0:
-        x1 += b0
-    return x1
+    return pow(a, b-2, b)
 
 
 if __name__ == '__main__' and not sys.flags.interactive:
