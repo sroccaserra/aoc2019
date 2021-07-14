@@ -2,22 +2,37 @@ import fileinput
 import sys
 from functools import reduce
 
-NB_CARDS = 10007
+# NB_CARDS = 10007
 # NB_CARDS = 10
+NB_CARDS = 119315717514047
+NB_PROCESSES = 101741582076661
 
 
 def main():
     lines = [line.strip() for line in fileinput.input()]
     shuffles = parse(lines)
-    i = solve_1(2019, shuffles)
-    print(i)
-    shuffle = invert(reduce(combine, shuffles, (1, 0)))
-    print((shuffle[0]*i + shuffle[1]) % NB_CARDS)
+    # print(solve_1(2019, shuffles))
+    print(solve_2(2020, shuffles))
 
 
 def solve_1(i, shuffles):
     shuffle = reduce(combine, shuffles, (1, 0))
     return (shuffle[0]*i + shuffle[1]) % NB_CARDS
+
+
+# Appliquer n fois une fonction affine :
+# ax + b
+# a(ax+b) + b = a^2x + ab + b
+# a(a^2x + ab + b) = a^3x + a^2b + ab + b
+# ...
+# La pente est a^n, et l'ordonnée à l'origine est la somme de la suite
+# géométrique de raison a et de premier terme b
+# a^n x + b * (a^n - 1) / (a - 1)
+def solve_2(i, shuffles):
+    shuffle = invert(reduce(combine, shuffles, (1, 0)))
+    a = pow(shuffle[0], NB_PROCESSES, NB_CARDS)
+    b = shuffle[1]*(a + NB_CARDS - 1)*mul_inv(shuffle[0]-1, NB_CARDS)
+    return (a*i + b) % NB_CARDS
 
 
 def parse(lines):
