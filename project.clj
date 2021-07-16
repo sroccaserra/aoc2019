@@ -22,7 +22,8 @@
              :day-15 {:main day-15.main}
              :day-17 {:main day-17.main}
              :day-19 {:main day-19.main}
-             :day-21 {:main day-21.main}}
+             :day-21 {:main day-21.main}
+             :day-23 {:main day-23.main}}
 
   :test-paths ["src"]
 
@@ -45,4 +46,5 @@
             "run-day-15" ["with-profile" "day-15" "run"]
             "run-day-17" ["with-profile" "day-17" "run"]
             "run-day-19" ["with-profile" "day-19" "run"]
-            "run-day-21" ["with-profile" "day-21" "run"]})
+            "run-day-21" ["with-profile" "day-21" "run"]
+            "run-day-23" ["with-profile" "day-23" "run"]})
