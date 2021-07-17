@@ -18,15 +18,12 @@ def parse(lines):
 
 def solve_1(grid):
     history = set()
-    add_to_history(history, grid)
-    next_step = step(grid)
-    c = 0
-    while not is_in_history(history, next_step):
-        c += 1
-        grid = next_step
+    while True:
         add_to_history(history, grid)
-        next_step = step(grid)
-    return biodiversity_rating(next_step)
+        grid = step(grid)
+        if is_in_history(history, grid):
+            break
+    return biodiversity_rating(grid)
 
 
 def add_to_history(history, grid):
