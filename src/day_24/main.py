@@ -7,13 +7,13 @@ H = 5
 
 
 def parse(lines):
-    cells = defaultdict(bool)
+    cells = set()
     for y in range(H):
         row = lines[y]
         for x in range(W):
             c = row[x]
             if c == '#':
-                cells[(x, y)] = True
+                cells.add((x, y))
     return cells
 
 
@@ -38,21 +38,21 @@ def is_in_history(history, cells):
 
 
 def sorted_items(cells):
-    return tuple(sorted(cells.items()))
+    return tuple(sorted(cells))
 
 
 def step(cells):
-    result = defaultdict(bool)
+    result = set()
     for y in range(H):
         for x in range(W):
             pos = (x, y)
-            bug = cells[pos]
+            bug = pos in cells
             ns = neighbors(cells, pos)
             n = nb_alive(ns)
             if bug and n == 1:
-                result[pos] = True
+                result.add(pos)
             if (not bug) and (n == 1 or n == 2):
-                result[pos] = True
+                result.add(pos)
     return result
 
 
@@ -60,7 +60,7 @@ def neighbors(cells, pos):
     x, y = pos
     result = []
     for dx, dy in [(0, -1), (1, 0), (0, 1), (-1, 0)]:
-        result.append(cells[(x+dx, y+dy)])
+        result.append((x + dx, y + dy) in cells)
     return result
 
 
@@ -72,7 +72,7 @@ def biodiversity_rating(cells):
     result = 0
     for y in range(H):
         for x in range(W):
-            if cells[(x, y)]:
+            if (x, y) in cells:
                 result += pow(2, x + W*y)
     return result
 
@@ -82,8 +82,8 @@ def biodiversity_rating(cells):
 
 def solve_2(initial_cells):
     cells = defaultdict(bool)
-    for (x, y), bug in initial_cells.items():
-        cells[(x, y, 0)] = bug
+    for (x, y) in initial_cells:
+        cells[(x, y, 0)] = True
     print(show(cells, 0))
     for depth in range(10):
         cells = step_folded(depth, cells)

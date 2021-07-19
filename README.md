@@ -79,6 +79,11 @@ fibs = listArray (0, n-1) $ 0 : 1 : [fibs!(i-1) + fibs!(i-2) | i <- [2..n-1]]
   where n = 100
 ```
 
+### Python
+
+- For a defaultdict, `tuple(sorted(a_defaultdict.items()))` can be inserted in a set (to build a history of states)
+- For a set, `tuple(sorted(a_set))` can be inserted in a set (to build a history of states)
+
 ### References
 
 - <https://github.com/tpope/vim-fireplace>
