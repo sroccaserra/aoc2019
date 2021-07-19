@@ -79,17 +79,6 @@ def biodiversity_rating(cells):
 ##
 # Part two
 
-def solve_2(initial_cells):
-    cells = set()
-    for (x, y) in initial_cells:
-        cells.add((x, y, 0))
-    print(show(cells, 0))
-    for depth in range(10):
-        cells = step_folded(depth, cells)
-        print(show(cells, depth+1))
-    return None
-
-
 def show(cells, depth):
     levels = []
     for d in range(-depth, depth+1):
@@ -99,13 +88,29 @@ def show(cells, depth):
             for x in range(W):
                 bug = (x, y, d) in cells
                 c = '#' if bug else '.'
-                if (x, y) == (2, 2):
+                if c == '.' and (x, y) == (2, 2):
                     line.append('?')
                 else:
                     line.append(c)
             lines.append(''.join(line))
         levels.append('{}\n'.format(d)+'\n'.join(lines))
     return '\n\n'.join(levels)
+
+
+def solve_2(initial_cells):
+    cells = set()
+    for (x, y) in initial_cells:
+        cells.add((x, y, 0))
+    # print(show(cells, 0))
+    # print('\n-----\n')
+    minutes = 200
+    for t in range(1, minutes + 1):
+        cells = step_folded(t, cells)
+    # print(show(cells, minutes//2))
+    return len(cells)
+
+
+debug = None  # (0, 4, 1)
 
 
 def step_folded(depth, cells):
@@ -123,15 +128,18 @@ def step_folded(depth, cells):
                     result.add(pos)
                 if (not bug) and (n == 1 or n == 2):
                     result.add(pos)
+                global debug
+                if (x, y, d) == debug:
+                    print(debug, debug in result, ns)
     return result
 
 
 def neighbors_folded(cells, pos):
-    x, y, _ = pos
+    x, y, d = pos
 
     result = []
     for dx, dy in [(0, -1), (1, 0), (0, 1), (-1, 0)]:
-        result.append((x+dx, y+dy) in cells)
+        result.append((x+dx, y+dy, d) in cells)
 
     return result + \
         neighbors_folded_outer(cells, pos) + \
@@ -140,30 +148,36 @@ def neighbors_folded(cells, pos):
 
 def neighbors_folded_outer(cells, pos):
     x, y, d = pos
+    result = []
+
     if x == 0:
-        return [(1, 2, d-1) in cells]
+        result.append((1, 2, d-1) in cells)
     elif x == W-1:
-        return [(3, 2, d-1) in cells]
-    elif y == 0:
-        return [(2, 2, d-1) in cells]
+        result.append((3, 2, d-1) in cells)
+
+    if y == 0:
+        result.append((2, 1, d-1) in cells)
     elif y == H-1:
-        return [(2, 2, d-1) in cells]
-    else:
-        return []
+        result.append((2, 3, d-1) in cells)
+    return result
 
 
 def neighbors_folded_inner(cells, pos):
     x, y, d = pos
+
     if x == 2 and y == 1:
         return [(i, 0, d+1) in cells for i in range(W)]
-    elif x == 2 and y == 3:
+
+    if x == 2 and y == 3:
         return [(i, H-1, d+1) in cells for i in range(W)]
-    elif y == 2 and x == 1:
+
+    if y == 2 and x == 1:
         return [(0, j, d+1) in cells for j in range(H)]
-    elif y == 2 and x == 3:
+
+    if y == 2 and x == 3:
         return [(W-1, j, d+1) in cells for j in range(H)]
-    else:
-        return []
+
+    return []
 
 
 if __name__ == '__main__' and not sys.flags.interactive:
