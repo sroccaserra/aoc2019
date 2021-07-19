@@ -1,6 +1,5 @@
 import fileinput
 import sys
-from collections import defaultdict
 
 W = 5
 H = 5
@@ -81,9 +80,9 @@ def biodiversity_rating(cells):
 # Part two
 
 def solve_2(initial_cells):
-    cells = defaultdict(bool)
+    cells = set()
     for (x, y) in initial_cells:
-        cells[(x, y, 0)] = True
+        cells.add((x, y, 0))
     print(show(cells, 0))
     for depth in range(10):
         cells = step_folded(depth, cells)
@@ -98,7 +97,7 @@ def show(cells, depth):
         for y in range(H):
             line = []
             for x in range(W):
-                bug = cells[(x, y, d)]
+                bug = (x, y, d) in cells
                 c = '#' if bug else '.'
                 if (x, y) == (2, 2):
                     line.append('?')
@@ -110,20 +109,20 @@ def show(cells, depth):
 
 
 def step_folded(depth, cells):
-    result = defaultdict(bool)
+    result = set()
     for d in range(-depth - 1, depth+2):
         for y in range(H):
             for x in range(W):
                 if x == 2 and y == 2:
                     continue
                 pos = (x, y, d)
-                bug = cells[pos]
+                bug = pos in cells
                 ns = neighbors_folded(cells, pos)
                 n = nb_alive(ns)
                 if bug and n == 1:
-                    result[pos] = True
+                    result.add(pos)
                 if (not bug) and (n == 1 or n == 2):
-                    result[pos] = True
+                    result.add(pos)
     return result
 
 
@@ -132,7 +131,7 @@ def neighbors_folded(cells, pos):
 
     result = []
     for dx, dy in [(0, -1), (1, 0), (0, 1), (-1, 0)]:
-        result.append(cells[(x+dx, y+dy)])
+        result.append((x+dx, y+dy) in cells)
 
     return result + \
         neighbors_folded_outer(cells, pos) + \
@@ -142,13 +141,13 @@ def neighbors_folded(cells, pos):
 def neighbors_folded_outer(cells, pos):
     x, y, d = pos
     if x == 0:
-        return [cells[(1, 2, d-1)]]
+        return [(1, 2, d-1) in cells]
     elif x == W-1:
-        return [cells[(3, 2, d-1)]]
+        return [(3, 2, d-1) in cells]
     elif y == 0:
-        return [cells[(2, 2, d-1)]]
+        return [(2, 2, d-1) in cells]
     elif y == H-1:
-        return [cells[(2, 2, d-1)]]
+        return [(2, 2, d-1) in cells]
     else:
         return []
 
@@ -156,13 +155,13 @@ def neighbors_folded_outer(cells, pos):
 def neighbors_folded_inner(cells, pos):
     x, y, d = pos
     if x == 2 and y == 1:
-        return [cells[(i, 0, d+1)] for i in range(W)]
+        return [(i, 0, d+1) in cells for i in range(W)]
     elif x == 2 and y == 3:
-        return [cells[(i, H-1, d+1)] for i in range(W)]
+        return [(i, H-1, d+1) in cells for i in range(W)]
     elif y == 2 and x == 1:
-        return [cells[(0, j, d+1)] for j in range(H)]
+        return [(0, j, d+1) in cells for j in range(H)]
     elif y == 2 and x == 3:
-        return [cells[(W-1, j, d+1)] for j in range(H)]
+        return [(W-1, j, d+1) in cells for j in range(H)]
     else:
         return []
 
