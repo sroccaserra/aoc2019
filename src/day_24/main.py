@@ -8,25 +8,23 @@ H = 5
 
 def parse(lines):
     cells = defaultdict(bool)
-    w = len(lines[0])
-    h = len(lines)
-    for y in range(h):
+    for y in range(H):
         row = lines[y]
-        for x in range(w):
+        for x in range(W):
             c = row[x]
             if c == '#':
                 cells[(x, y)] = True
-    return w, h, cells
+    return cells
 
 
-def solve_1(w, h, cells):
+def solve_1(cells):
     history = set()
     while True:
         add_to_history(history, cells)
-        cells = step(w, h, cells)
+        cells = step(cells)
         if is_in_history(history, cells):
             break
-    return biodiversity_rating(w, h, cells)
+    return biodiversity_rating(cells)
 
 
 def add_to_history(history, cells):
@@ -43,10 +41,10 @@ def sorted_items(cells):
     return tuple(sorted(cells.items()))
 
 
-def step(w, h, cells):
+def step(cells):
     result = defaultdict(bool)
-    for y in range(h):
-        for x in range(w):
+    for y in range(H):
+        for x in range(W):
             pos = (x, y)
             bug = cells[pos]
             ns = neighbors(cells, pos)
@@ -70,64 +68,66 @@ def nb_alive(ns):
     return len([x for x in ns if x])
 
 
-def biodiversity_rating(w, h, cells):
+def biodiversity_rating(cells):
     result = 0
-    for y in range(h):
-        for x in range(w):
+    for y in range(H):
+        for x in range(W):
             if cells[(x, y)]:
-                result += pow(2, x + w*y)
+                result += pow(2, x + W*y)
     return result
 
 
 ##
 # Part two
 
-def solve_2(w, h, initial_cells):
+def solve_2(initial_cells):
     cells = defaultdict(bool)
     for (x, y), bug in initial_cells.items():
         cells[(x, y, 0)] = bug
     print(show(cells, 0))
-    for depth in range(1):
-        cells = step_folded(w, h, depth, cells)
-    return show(cells, depth)
+    for depth in range(10):
+        cells = step_folded(depth, cells)
+        print(show(cells, depth+1))
+    return None
 
 
 def show(cells, depth):
     levels = []
     for d in range(-depth, depth+1):
         lines = []
-        for y in range(h):
+        for y in range(H):
             line = []
-            for x in range(w):
+            for x in range(W):
                 bug = cells[(x, y, d)]
                 c = '#' if bug else '.'
-                line.append(c)
+                if (x, y) == (2, 2):
+                    line.append('?')
+                else:
+                    line.append(c)
             lines.append(''.join(line))
         levels.append('{}\n'.format(d)+'\n'.join(lines))
     return '\n\n'.join(levels)
 
 
-def step_folded(w, h, depth, cells):
+def step_folded(depth, cells):
     result = defaultdict(bool)
-    for d in range(-depth, depth+1):
-        for y in range(h):
-            for x in range(w):
+    for d in range(-depth - 1, depth+2):
+        for y in range(H):
+            for x in range(W):
                 if x == 2 and y == 2:
                     continue
                 pos = (x, y, d)
                 bug = cells[pos]
-                ns = neighbors_folded(w, h, cells, pos)
+                ns = neighbors_folded(cells, pos)
                 n = nb_alive(ns)
                 if bug and n == 1:
-                    print('xxxxx')
                     result[pos] = True
                 if (not bug) and (n == 1 or n == 2):
-                    print('xxxxx')
                     result[pos] = True
     return result
 
 
-def neighbors_folded(w, h, cells, pos):
+def neighbors_folded(cells, pos):
     x, y, _ = pos
 
     result = []
@@ -143,11 +143,11 @@ def neighbors_folded_outer(cells, pos):
     x, y, d = pos
     if x == 0:
         return [cells[(1, 2, d-1)]]
-    elif x == w-1:
+    elif x == W-1:
         return [cells[(3, 2, d-1)]]
     elif y == 0:
         return [cells[(2, 2, d-1)]]
-    elif y == h-1:
+    elif y == H-1:
         return [cells[(2, 2, d-1)]]
     else:
         return []
@@ -169,6 +169,6 @@ def neighbors_folded_inner(cells, pos):
 
 if __name__ == '__main__' and not sys.flags.interactive:
     lines = [line.strip() for line in fileinput.input()]
-    w, h, cells = parse(lines)
-    print(solve_1(w, h, cells.copy()))
-    print(solve_2(w, h, cells))
+    cells = parse(lines)
+    print(solve_1(cells.copy()))
+    print(solve_2(cells))
