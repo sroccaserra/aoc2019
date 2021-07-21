@@ -57,6 +57,20 @@
     (println command)
     (eval-print-command vm command)))
 
+(defn take-object [vm object]
+  (let [command (str "take " object)]
+    (println command)
+    (eval-print-command vm command)))
+
+(defn try-subset [vm subset]
+  (let [vm' (eval-print-command (reduce take-object vm subset) "south")
+        output (decode-output (:outputs vm'))]
+    (prn subset)
+    output))
+
+(defn does-pass-security-checkpoint [output]
+  (nil? (re-matches #".*lighter.*|.*heavier.*" (str/replace output "\n" ""))))
+
 (defn -main [& args]
   (let [intcode-program (read-intcode-program-from-file "resources/day_25/input.txt")
         vm (-> intcode-program
@@ -65,5 +79,9 @@
     (print-output vm)
     (let [vm' (reduce (fn [vm command] (println command) (eval-print-command vm command))
                       vm commands)
-          vm'' (reduce drop-object vm' objects)]
+          vm'' (reduce drop-object vm' objects)
+          subsets (powerset objects)]
+      (doall (take-while #(not (does-pass-security-checkpoint %))
+                         (map #(try-subset vm'' %) subsets)))
+      (println "\nAutomatic sequence ended, reverting to manual.")
       (repl vm''))))
