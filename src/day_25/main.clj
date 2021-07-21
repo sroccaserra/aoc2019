@@ -1,9 +1,19 @@
 (ns day-25.main
   (:gen-class)
   (:require [clojure.string :as str]
+            [clojure.set :refer [union]]
             [aoc-common-cli :refer [read-intcode-program-from-file]]
             [intcode.vm-state :refer [create-intcode-vm add-inputs drop-outputs]]
             [intcode.run :refer [run-until-needs-input]]))
+
+(def objects #{"jam"
+               "shell"
+               "space heater"
+               "space law space brochure"
+               "astronaut ice cream"
+               "asterisk"
+               "klein bottle"
+               "spool of cat6"})
 
 (def commands ["south" "west" "take shell"
                "east" "east" "take space heater"
@@ -15,6 +25,11 @@
                "north" "east" "south" "take space law space brochure"
                "inv"
                "north" "west" "south" "south" "south" "south" "west"])
+
+(defn powerset [s]
+  (apply union
+         #{s} ;the complete set of all s
+         (map (fn [i] (powerset (disj s i))) s)))
 
 (defn encode-command [command]
   (concat (map int command) [10]))
@@ -37,11 +52,18 @@
   (let [command (read-line)]
     (recur (eval-print-command vm command))))
 
+(defn drop-object [vm object]
+  (let [command (str "drop " object)]
+    (println command)
+    (eval-print-command vm command)))
+
 (defn -main [& args]
   (let [intcode-program (read-intcode-program-from-file "resources/day_25/input.txt")
         vm (-> intcode-program
                (create-intcode-vm :inputs [] :memory-size 8000)
                run-until-needs-input)]
     (print-output vm)
-    (repl (reduce (fn [vm command] (println command) (eval-print-command vm command))
-                  vm commands))))
+    (let [vm' (reduce (fn [vm command] (println command) (eval-print-command vm command))
+                      vm commands)
+          vm'' (reduce drop-object vm' objects)]
+      (repl vm''))))
