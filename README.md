@@ -52,7 +52,13 @@ with:
 
 ### Clojure
 
--  For fast feedback, start a REPL and don't close it. Change the file and reload it, with ` (use 'day-21.main :reload) (-main)` for example.
+- Small clojure setup:
+    - an `src/toto.clj` file, with a `(ns toto)` declaration and a `(defn -main [& args] (println "salut"))` function
+    - run with `clj -M -m toto`
+
+- `clj` REPL starts faster than `lein repl`
+
+- For fast feedback, start a REPL and don't close it. Change the file and reload it, with `(do (use 'day-21.main :reload) (-main))` for example. Not working the first time it seems?
 
 - [fn][fn] defines a recursion point, so I don't need to `loop` to `recur` a
   `fn` (also true for `defn`).
